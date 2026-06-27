@@ -13,6 +13,7 @@ import { createOdometer } from "./odometer.js";
 import { renderProvinces } from "./provinces.js";
 import { initShareCard } from "./sharecard.js";
 import { initOttawaCompare } from "./ottawa-compare.js";
+import { initTip } from "./tip.js";
 import * as fmt from "./format.js";
 
 const FORMATTERS = {
@@ -78,6 +79,9 @@ renderProvinces(document.querySelector("#province-bars"));
 
 // Rotating "More than Ottawa spends on …" comparison (changes every ~2 hours).
 initOttawaCompare(document.querySelector("#ottawa-compare"));
+
+// Lightning tip — copy-address button.
+initTip(document.querySelector("#tip-copy-btn"));
 
 // Shareable "your debt in sats" card — snapshots the live values on click.
 initShareCard(document.querySelector("#share-card-btn"), () => snapshot(Date.now()));
