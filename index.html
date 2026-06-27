@@ -227,59 +227,53 @@
         </p>
       </div>
 
-      <div class="btc-layout">
-        <!-- Supply ring -->
-        <div class="ring-wrap">
-          <svg viewBox="0 0 220 220" class="ring">
-            <circle class="ring-track" cx="110" cy="110" r="96" />
-            <circle
-              id="btc-ring-progress"
-              class="ring-progress"
-              cx="110"
-              cy="110"
-              r="96"
-              transform="rotate(-90 110 110)"
-            />
-          </svg>
-          <div class="ring-center">
-            <div class="ring-pct" data-metric="btcMinedPct" data-format="pct2">0%</div>
-            <div class="ring-label">of 21M mined</div>
-            <div class="ring-mined" data-metric="btcMined" data-format="count">0</div>
-          </div>
-        </div>
-
-        <!-- Bitcoin framings -->
-        <div class="grid two btc-stats">
-          <article class="card btc-card">
-            <h3>Federal debt per bitcoin</h3>
-            <div class="value btc-val" data-metric="federalDebtPerBTC" data-format="money">$0</div>
-            <p class="hint">Federal debt ÷ 21,000,000 BTC.</p>
-          </article>
-          <article class="card btc-card">
-            <h3>Total gov debt per bitcoin</h3>
-            <div class="value btc-val" data-metric="totalDebtPerBTC" data-format="money">$0</div>
-            <p class="hint">All government debt ÷ the hard cap.</p>
-          </article>
-          <article class="card btc-card">
-            <h3>Your share of the debt, in Bitcoin</h3>
-            <div class="value btc-val" data-metric="yourShareInBTC" data-format="btc">0 ₿</div>
-            <p class="hint">
-              = <span data-metric="yourShareInSats" data-format="sats">0 sats</span> per citizen.
-            </p>
-          </article>
-          <article class="card btc-card">
-            <h3>BTC price (CAD)</h3>
-            <div class="value btc-val" data-metric="btcPriceCAD" data-format="money">$0</div>
-            <p class="hint">
-              Left to mine:
-              <span data-metric="btcRemaining" data-format="count">0</span> BTC, ever.
-            </p>
-          </article>
+      <!-- Supply ring — centered feature -->
+      <div class="ring-wrap">
+        <svg viewBox="0 0 220 220" class="ring">
+          <circle class="ring-track" cx="110" cy="110" r="96" />
+          <circle
+            id="btc-ring-progress"
+            class="ring-progress"
+            cx="110"
+            cy="110"
+            r="96"
+            transform="rotate(-90 110 110)"
+          />
+        </svg>
+        <div class="ring-center">
+          <div class="ring-pct" data-metric="btcMinedPct" data-format="pct2">0%</div>
+          <div class="ring-label">of 21M mined</div>
+          <div class="ring-mined" data-metric="btcMined" data-format="count">0</div>
         </div>
       </div>
 
-      <!-- Maxi: scarcity vs debasement, the halving, Moscow time -->
-      <div class="grid three maxi-grid">
+      <!-- All Bitcoin framings in one uniform grid -->
+      <div class="grid btc-grid">
+        <article class="card btc-card">
+          <h3>Federal debt per bitcoin</h3>
+          <div class="value btc-val" data-metric="federalDebtPerBTC" data-format="money">$0</div>
+          <p class="hint">Federal debt ÷ 21,000,000 BTC.</p>
+        </article>
+        <article class="card btc-card">
+          <h3>Total gov debt per bitcoin</h3>
+          <div class="value btc-val" data-metric="totalDebtPerBTC" data-format="money">$0</div>
+          <p class="hint">All government debt ÷ the hard cap.</p>
+        </article>
+        <article class="card btc-card">
+          <h3>Your share of the debt</h3>
+          <div class="value btc-val" data-metric="yourShareInBTC" data-format="btc">0 ₿</div>
+          <p class="hint">
+            = <span data-metric="yourShareInSats" data-format="sats">0 sats</span> per citizen.
+          </p>
+        </article>
+        <article class="card btc-card">
+          <h3>BTC price (CAD)</h3>
+          <div class="value btc-val" data-metric="btcPriceCAD" data-format="money">$0</div>
+          <p class="hint">
+            Left to mine:
+            <span data-metric="btcRemaining" data-format="count">0</span> BTC, ever.
+          </p>
+        </article>
         <article class="card btc-card">
           <h3>Bitcoin issuance · headed to zero</h3>
           <div class="value btc-val" data-metric="btcIssuanceRate" data-format="pct2">0%</div>

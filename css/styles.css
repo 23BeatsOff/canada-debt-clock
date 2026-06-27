@@ -215,6 +215,8 @@ body {
   padding: 20px 20px 18px;
   backdrop-filter: blur(6px);
   transition: transform 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 .card:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.18); }
 .card h3 {
@@ -224,6 +226,8 @@ body {
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 12px;
+  line-height: 1.25;
+  min-height: 2.5em; /* reserve 2 lines so the big numbers line up across a row */
 }
 .value {
   font-family: var(--font-num);
@@ -357,7 +361,8 @@ body {
   gap: 28px;
   align-items: center;
 }
-.ring-wrap { position: relative; display: grid; place-items: center; }
+.ring-wrap { position: relative; display: grid; place-items: center; margin: 4px auto 22px; }
+.btc-grid { margin-top: 0; }
 .ring { width: 220px; height: 220px; filter: drop-shadow(0 0 30px var(--btc-glow)); }
 .ring-track { fill: none; stroke: rgba(255, 255, 255, 0.08); stroke-width: 12; }
 .ring-progress {
