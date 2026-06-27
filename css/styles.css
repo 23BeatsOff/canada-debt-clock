@@ -555,4 +555,12 @@ body {
   .gut-punch { flex-direction: column; align-items: center; }
   .gp-side { max-width: 100%; }
   .gp-vs { padding: 6px 0; }
+
+  /* Center content in the single-column mobile view (bars stay left-to-right) */
+  .tagline,
+  .panel-head,
+  .card,
+  .footer,
+  .foot-grid > div { text-align: center; }
+  .sources { display: inline-block; text-align: left; }
 }
