@@ -23,6 +23,7 @@ const FORMATTERS = {
   pct2: (n) => fmt.pct(n, 2),
   btc: fmt.btc,
   sats: fmt.sats,
+  multiple: (n) => `${fmt.count(n)}×`,
   ppower: (n) => fmt.moneyCents(n).replace("CA", ""), // $0.71
   plain1: (n) => n.toFixed(1),
 };

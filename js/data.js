@@ -31,6 +31,9 @@ export const FISCAL_YEAR_START_ISO = "2026-04-01T00:00:00Z";
 // Bitcoin's defining property: the cap never moves.
 export const BTC_HARD_CAP = 21_000_000;
 
+// World population — for "every human's fair share of all Bitcoin, ever".
+export const WORLD_POP = 8_100_000_000;
+
 // M2 (gross) money supply in Jan 2020 — the anchor for purchasing-power decay.
 // StatCan vector 41552796: $1,816,665M. Purchasing power of a 2020 dollar today
 // = M2(2020) / M2(now), so it tracks the live money supply.
@@ -274,6 +277,55 @@ export const METRICS = {
     kind: "derived",
     deps: ["btcMined"],
     compute: (v) => (v.btcMined / BTC_HARD_CAP) * 100,
+  },
+
+  // --- Maxi: scarcity, issuance, the halving ------------------------------
+  // Block height derived from supply: 19,687,500 BTC were mined by the 2024
+  // halving at block 840,000; every block since adds 3.125 BTC.
+  btcBlockHeight: {
+    kind: "derived",
+    deps: ["btcMined"],
+    compute: (v) => 840_000 + (v.btcMined - 19_687_500) / 3.125,
+  },
+  blocksToHalving: {
+    kind: "derived",
+    deps: ["btcMined"],
+    compute: (v) => 1_050_000 - (840_000 + (v.btcMined - 19_687_500) / 3.125),
+  },
+  daysToHalving: {
+    kind: "derived",
+    deps: ["btcMined"],
+    compute: (v) =>
+      (1_050_000 - (840_000 + (v.btcMined - 19_687_500) / 3.125)) / 144,
+  },
+  // Bitcoin's annual new-supply rate — falls every halving, toward zero.
+  btcIssuanceRate: {
+    kind: "derived",
+    deps: ["btcMined"],
+    compute: (v) => ((450 * 365.25) / v.btcMined) * 100,
+  },
+  // "Moscow time" — sats per Canadian dollar (shrinks as BTC rises).
+  satsPerCAD: {
+    kind: "derived",
+    deps: ["btcPriceCAD"],
+    compute: (v) => 100_000_000 / v.btcPriceCAD,
+  },
+  // The scarcity bomb: every human's fair share of all Bitcoin, ever.
+  btcPerHuman: {
+    kind: "derived",
+    deps: [],
+    compute: () => BTC_HARD_CAP / WORLD_POP,
+  },
+  satsPerHuman: {
+    kind: "derived",
+    deps: [],
+    compute: () => (BTC_HARD_CAP / WORLD_POP) * 100_000_000,
+  },
+  // The gut-punch: a citizen's debt-in-sats vs their fair share of all BTC.
+  debtToScarcityRatio: {
+    kind: "derived",
+    deps: ["yourShareInSats"],
+    compute: (v) => v.yourShareInSats / ((BTC_HARD_CAP / WORLD_POP) * 100_000_000),
   },
 
   // Debt-to-GDP (federal and total)

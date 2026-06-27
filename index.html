@@ -248,6 +248,54 @@
         </div>
       </div>
 
+      <!-- Maxi: scarcity vs debasement, the halving, Moscow time -->
+      <div class="grid three maxi-grid">
+        <article class="card btc-card">
+          <h3>Bitcoin issuance · headed to zero</h3>
+          <div class="value btc-val" data-metric="btcIssuanceRate" data-format="pct2">0%</div>
+          <p class="hint">
+            New supply per year, halving toward <strong>0</strong>. The loonie (M2)
+            grows <span data-metric="m2GrowthRate" data-format="pct">0%</span> a year,
+            with no cap and no end.
+          </p>
+        </article>
+        <article class="card btc-card">
+          <h3>Next halving</h3>
+          <div class="value btc-val" data-metric="blocksToHalving" data-format="count">0</div>
+          <p class="hint">
+            blocks (~<span data-metric="daysToHalving" data-format="count">0</span> days)
+            until the reward halves to 1.5625 ₿. Tick tock, next block.
+          </p>
+        </article>
+        <article class="card btc-card">
+          <h3>Sats on the dollar · “Moscow time”</h3>
+          <div class="value btc-val" data-metric="satsPerCAD" data-format="sats">0</div>
+          <p class="hint">What one loonie buys in sats. It only shrinks.</p>
+        </article>
+      </div>
+
+      <!-- The scarcity bomb: a live gut-punch -->
+      <div class="scarcity-note">
+        <div class="scarcity-head">21,000,000. The whole supply — forever.</div>
+        <div class="gut-punch">
+          <div class="gp-side">
+            <span class="gp-label">What every Canadian owes<br />(their share of the national debt)</span>
+            <span class="gp-val debt" data-metric="yourShareInSats" data-format="sats">0</span>
+          </div>
+          <div class="gp-vs">vs</div>
+          <div class="gp-side">
+            <span class="gp-label">Every human's fair share of all Bitcoin, ever<br />(21,000,000 ÷ 8.1&nbsp;billion = 0.0026&nbsp;₿)</span>
+            <span class="gp-val btc-val" data-metric="satsPerHuman" data-format="sats">0</span>
+          </div>
+        </div>
+        <div class="scarcity-punch">
+          You owe <span data-metric="debtToScarcityRatio" data-format="multiple">0×</span>
+          more debt than you could ever own in hard money — and most coins are already
+          lost or held by people who will never sell.
+        </div>
+        <span class="maxi-cta">Own a whole one while you still can — and hold your own keys. Not your keys, not your coins.</span>
+      </div>
+
       <div class="share-row">
         <button id="share-card-btn" class="share-btn">
           ↓ Generate my "debt in sats" card

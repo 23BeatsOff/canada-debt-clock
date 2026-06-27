@@ -385,6 +385,86 @@ body {
 .btc-card { border-color: rgba(247, 147, 26, 0.18); }
 .btc-val { color: var(--btc); text-shadow: 0 0 22px var(--btc-glow); }
 
+.maxi-grid { margin-top: 18px; }
+
+.scarcity-note {
+  margin-top: 20px;
+  padding: 22px clamp(18px, 3vw, 30px);
+  border-radius: 16px;
+  border: 1px solid rgba(247, 147, 26, 0.3);
+  background:
+    radial-gradient(600px 200px at 50% 0%, rgba(247, 147, 26, 0.12), transparent 70%),
+    rgba(247, 147, 26, 0.04);
+  color: var(--muted);
+  font-size: clamp(14px, 1.9vw, 17px);
+  line-height: 1.65;
+  text-align: center;
+}
+.scarcity-note strong { color: var(--text); }
+.scarcity-head {
+  color: var(--text);
+  font-weight: 700;
+  font-size: clamp(17px, 2.4vw, 22px);
+  margin-bottom: 20px;
+}
+.gut-punch {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 8px;
+}
+.gp-side {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 360px;
+  padding: 6px 16px;
+}
+.gp-label {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.gp-val {
+  display: block;
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: clamp(20px, 3.4vw, 32px);
+  letter-spacing: -0.5px;
+}
+.gp-val.debt { color: var(--debt); text-shadow: 0 0 22px var(--debt-glow); }
+.gp-vs {
+  align-self: center;
+  font-family: var(--font-num);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0 4px;
+}
+.scarcity-punch {
+  margin-top: 22px;
+  font-size: clamp(16px, 2.3vw, 21px);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+}
+.scarcity-punch [data-metric] {
+  color: var(--btc);
+  font-family: var(--font-num);
+  font-weight: 800;
+  text-shadow: 0 0 22px var(--btc-glow);
+}
+.maxi-cta {
+  display: block;
+  margin-top: 12px;
+  color: var(--btc);
+  font-weight: 700;
+  font-size: clamp(15px, 2vw, 18px);
+  text-shadow: 0 0 22px var(--btc-glow);
+}
+
 /* ---------- Share card button ---------- */
 .share-row {
   margin-top: 26px;
@@ -470,4 +550,9 @@ body {
 
   /* Share row stacks */
   .share-row { flex-direction: column; gap: 10px; }
+
+  /* Gut-punch stacks vertically with a centered VS */
+  .gut-punch { flex-direction: column; align-items: center; }
+  .gp-side { max-width: 100%; }
+  .gp-vs { padding: 6px 0; }
 }
