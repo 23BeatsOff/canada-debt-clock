@@ -499,17 +499,33 @@ body {
 .share-hint { font-size: 13px; color: var(--muted); }
 
 .tip-row {
-  margin-top: 16px;
+  margin-top: 18px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
-  text-align: center;
+  text-align: left;
   font-size: 13px;
 }
+.tip-qr {
+  display: block;
+  width: 120px;
+  height: 120px;
+  background: #fff;
+  padding: 8px;
+  border-radius: 10px;
+  image-rendering: pixelated;
+}
+.tip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.tip-actions { display: flex; align-items: center; gap: 10px; }
 .tip-zap { color: var(--btc); font-size: 16px; }
-.tip-label { color: var(--muted); }
+.tip-label { color: var(--muted); max-width: 260px; }
 .tip-addr {
   font-family: var(--font-num);
   color: var(--btc);
@@ -591,6 +607,9 @@ body {
 
   /* Share row stacks */
   .share-row { flex-direction: column; gap: 10px; }
+  .tip-row { flex-direction: column; text-align: center; }
+  .tip-info { align-items: center; }
+  .tip-label { max-width: 100%; }
 
   /* Gut-punch stacks vertically with a centered VS */
   .gut-punch { flex-direction: column; align-items: center; }
