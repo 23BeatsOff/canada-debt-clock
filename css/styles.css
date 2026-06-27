@@ -518,6 +518,9 @@ body {
 .sources li { padding: 3px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); }
 .foot-note { margin-top: 24px; font-size: 12.5px; text-align: center; }
 .foot-note strong { color: var(--btc); }
+.foot-credit { margin-top: 10px; font-size: 12.5px; text-align: center; color: var(--muted); }
+.foot-credit a { color: var(--btc); text-decoration: none; }
+.foot-credit a:hover { text-decoration: underline; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
