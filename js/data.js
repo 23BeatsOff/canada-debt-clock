@@ -310,6 +310,12 @@ export const METRICS = {
     deps: ["btcPriceCAD"],
     compute: (v) => 100_000_000 / v.btcPriceCAD,
   },
+  // Stock-to-flow: existing supply ÷ annual new supply (climbs each halving).
+  stockToFlow: {
+    kind: "derived",
+    deps: ["btcMined"],
+    compute: (v) => v.btcMined / (450 * 365.25),
+  },
   // The scarcity bomb: every human's fair share of all Bitcoin, ever.
   btcPerHuman: {
     kind: "derived",
