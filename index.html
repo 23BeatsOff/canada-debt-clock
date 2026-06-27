@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Canadian Debt Clock — Priced in Hard Money</title>
+    <meta
+      name="description"
+      content="Canada's national debt in real time — federal and total government debt, the hidden tax of monetary debasement, and every figure priced against Bitcoin's 21,000,000 hard cap."
+    />
+    <link rel="preconnect" href="https://api.coingecko.com" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <!-- ===================== HEADER ===================== -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="maple">🍁</span>
+        <span class="brand-name">The Canadian Debt Clock</span>
+      </div>
+      <div id="live-status" class="status-pill seed">● connecting…</div>
+    </header>
+
+    <p class="tagline">
+      A loonie is a promise. <strong>Bitcoin is a number that doesn't move.</strong>
+      Watch the gap widen in real time.
+    </p>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="hero-label">CANADA · FEDERAL DEBT</div>
+      <div class="hero-number debt" data-metric="federalDebt" data-format="money">
+        $0
+      </div>
+      <div class="hero-sub">
+        Total government debt (federal + provincial + municipal):
+        <span class="accent" data-metric="totalGovDebt" data-format="money">$0</span>
+      </div>
+      <div class="hero-context">
+        <span><span data-metric="federalDebtToGDP" data-format="pct">0%</span> of GDP (federal)</span>
+        <span class="dot">·</span>
+        <span><span data-metric="totalDebtToGDP" data-format="pct">0%</span> of GDP (all govts)</span>
+      </div>
+    </section>
+
+    <!-- ===================== CORE GRID ===================== -->
+    <section class="grid">
+      <article class="card">
+        <h3>Federal deficit · this fiscal year</h3>
+        <div class="value debt" data-metric="federalDeficitYTD" data-format="money">$0</div>
+        <p class="hint">Borrowed since April 1 — every dollar added to the pile above.</p>
+      </article>
+
+      <article class="card">
+        <h3>Interest on the debt · this fiscal year</h3>
+        <div class="value debt" data-metric="federalInterest" data-format="money">$0</div>
+        <p class="hint">Public debt charges. Money that buys nothing but yesterday.</p>
+      </article>
+
+      <article class="card">
+        <h3>Debt per citizen</h3>
+        <div class="value" data-metric="debtPerCitizen" data-format="moneyCents">$0</div>
+        <p class="hint">
+          Per taxpayer:
+          <span class="accent" data-metric="debtPerTaxpayer" data-format="moneyCents">$0</span>
+        </p>
+      </article>
+
+      <article class="card">
+        <h3>Population of Canada</h3>
+        <div class="value" data-metric="population" data-format="count">0</div>
+        <p class="hint">
+          Total-government debt per citizen:
+          <span class="accent" data-metric="totalDebtPerCitizen" data-format="moneyCents">$0</span>
+        </p>
+      </article>
+    </section>
+
+    <!-- ===================== AUSTRIAN PANEL ===================== -->
+    <section class="panel austrian">
+      <div class="panel-head">
+        <h2>The Hidden Tax</h2>
+        <p>
+          The debt above is the <em>small</em> lie. The big one is the dollar it's
+          measured in. When the money supply expands faster than the economy, your
+          savings are taxed without a vote — the Cantillon effect. This is the
+          honest inflation rate.
+        </p>
+      </div>
+      <div class="grid three">
+        <article class="card">
+          <h3>Money supply (M2)</h3>
+          <div class="value warn" data-metric="moneySupplyM2" data-format="money">$0</div>
+          <p class="hint">Loonies in existence. Printed, not earned.</p>
+        </article>
+        <article class="card">
+          <h3>Purchasing power of a 2020 dollar</h3>
+          <div class="value warn" data-metric="dollarPurchasingPower" data-format="ppower">$0</div>
+          <p class="hint">What one 2020 loonie buys today, at the true debasement rate.</p>
+        </article>
+        <article class="card">
+          <h3>Nominal GDP</h3>
+          <div class="value" data-metric="gdp" data-format="money">$0</div>
+          <p class="hint">The economy the debt is borrowed against.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== BITCOIN PANEL ===================== -->
+    <section class="panel bitcoin">
+      <div class="panel-head">
+        <h2><span class="btc-mark">₿</span> Priced in Hard Money</h2>
+        <p>
+          Government debt grows without limit. Bitcoin's supply is capped at
+          <strong>21,000,000</strong> — forever. Here is the debt measured against
+          money that cannot be printed.
+        </p>
+      </div>
+
+      <div class="btc-layout">
+        <!-- Supply ring -->
+        <div class="ring-wrap">
+          <svg viewBox="0 0 220 220" class="ring">
+            <circle class="ring-track" cx="110" cy="110" r="96" />
+            <circle
+              id="btc-ring-progress"
+              class="ring-progress"
+              cx="110"
+              cy="110"
+              r="96"
+              transform="rotate(-90 110 110)"
+            />
+          </svg>
+          <div class="ring-center">
+            <div class="ring-pct" data-metric="btcMinedPct" data-format="pct2">0%</div>
+            <div class="ring-label">of 21M mined</div>
+            <div class="ring-mined" data-metric="btcMined" data-format="count">0</div>
+          </div>
+        </div>
+
+        <!-- Bitcoin framings -->
+        <div class="grid two btc-stats">
+          <article class="card btc-card">
+            <h3>Federal debt per bitcoin</h3>
+            <div class="value btc-val" data-metric="federalDebtPerBTC" data-format="money">$0</div>
+            <p class="hint">Federal debt ÷ 21,000,000 BTC.</p>
+          </article>
+          <article class="card btc-card">
+            <h3>Total gov debt per bitcoin</h3>
+            <div class="value btc-val" data-metric="totalDebtPerBTC" data-format="money">$0</div>
+            <p class="hint">All government debt ÷ the hard cap.</p>
+          </article>
+          <article class="card btc-card">
+            <h3>Your share of the debt, in Bitcoin</h3>
+            <div class="value btc-val" data-metric="yourShareInBTC" data-format="btc">0 ₿</div>
+            <p class="hint">
+              = <span data-metric="yourShareInSats" data-format="sats">0 sats</span> per citizen.
+            </p>
+          </article>
+          <article class="card btc-card">
+            <h3>BTC price (CAD)</h3>
+            <div class="value btc-val" data-metric="btcPriceCAD" data-format="money">$0</div>
+            <p class="hint">
+              Left to mine:
+              <span data-metric="btcRemaining" data-format="count">0</span> BTC, ever.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="footer">
+      <div class="foot-grid">
+        <div>
+          <h4>Methodology</h4>
+          <p>
+            Each figure is anchored to a sourced value and a rate of change, then
+            extrapolated in your browser. The BTC price is live from CoinGecko;
+            everything else updates when the underlying data is refreshed. This is
+            an estimate engine, not a settlement system — see
+            <code>js/data.js</code> for every number, its date, and its source.
+          </p>
+        </div>
+        <div>
+          <h4>Sources</h4>
+          <ul class="sources">
+            <li>Bank of Canada — Valet API</li>
+            <li>Statistics Canada — population &amp; monetary aggregates</li>
+            <li>Dept. of Finance — Fiscal Reference Tables / Budget</li>
+            <li>Public Accounts of Canada — debt &amp; public debt charges</li>
+            <li>Provincial public accounts</li>
+            <li>CoinGecko — live BTC price</li>
+          </ul>
+        </div>
+      </div>
+      <p class="foot-note">
+        Data as of <span id="as-of">—</span>. Figures are estimates for public
+        education; verify against primary sources before relying on them.
+        <strong>Fix the money, fix the country.</strong>
+      </p>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
