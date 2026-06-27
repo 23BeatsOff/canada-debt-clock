@@ -31,6 +31,11 @@ export const FISCAL_YEAR_START_ISO = "2026-04-01T00:00:00Z";
 // Bitcoin's defining property: the cap never moves.
 export const BTC_HARD_CAP = 21_000_000;
 
+// M2 (gross) money supply in Jan 2020 — the anchor for purchasing-power decay.
+// StatCan vector 41552796: $1,816,665M. Purchasing power of a 2020 dollar today
+// = M2(2020) / M2(now), so it tracks the live money supply.
+export const M2_2020 = 1_816_665_000_000;
+
 // Helper: convert an annual flow ($/year) into a per-second rate.
 const perSecond = (perYear) => perYear / SECONDS_PER_YEAR;
 
@@ -91,7 +96,7 @@ export const FIGURES = {
   // ---- Monetary (the Austrian centerpiece) --------------------------------
   moneySupplyM2: {
     value: 2_865_000_000_000,            // ≈$2.87T at 2026-06-27
-    perYear: 200_000_000_000,            // ~+7%/yr debasement
+    perYear: 120_000_000_000,            // ~+4.2%/yr (offline seed; live overrides)
     asOf: "2026-04-30",
     source: "Bank of Canada / StatCan — M2 monetary aggregate ($2,816.9B, Apr 2026)",
   },
@@ -170,6 +175,17 @@ export const METRICS = {
     kind: "linear",
     base: FIGURES.moneySupplyM2.value,
     perSecond: perSecond(FIGURES.moneySupplyM2.perYear),
+  },
+  // Live rates (percent, YoY) — base is the offline seed; live.js overrides.
+  m2GrowthRate: {
+    kind: "linear",
+    base: 4.2, // % YoY money-supply growth (the real debasement rate)
+    perSecond: 0,
+  },
+  cpiInflation: {
+    kind: "linear",
+    base: 3.2, // % YoY official CPI (what's admitted)
+    perSecond: 0,
   },
   gdp: {
     kind: "linear",
@@ -253,19 +269,11 @@ export const METRICS = {
     compute: (v) => (v.totalGovDebt / v.gdp) * 100,
   },
 
-  // Austrian: purchasing power of a dollar relative to a base year, decaying
-  // at the (broad-money) debasement rate. Shows the hidden tax.
+  // Austrian: purchasing power of a 2020 dollar = M2(2020) / M2(now).
+  // Tracks the LIVE money supply, so it falls in real time as M2 expands.
   dollarPurchasingPower: {
     kind: "derived",
-    deps: [],
-    compute: () => {
-      // Money-supply debasement is the honest inflation rate.
-      const debasement = FIGURES.moneySupplyM2.perYear / FIGURES.moneySupplyM2.value;
-      const baseYear = 2020;
-      const now = new Date();
-      const years =
-        (now - new Date(`${baseYear}-01-01T00:00:00Z`)) / (SECONDS_PER_YEAR * 1000);
-      return Math.pow(1 - debasement, years); // $1 (2020) in today's dollars
-    },
+    deps: ["moneySupplyM2"],
+    compute: (v) => M2_2020 / v.moneySupplyM2,
   },
 };

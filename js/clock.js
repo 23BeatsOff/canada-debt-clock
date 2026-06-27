@@ -11,19 +11,26 @@ import { METRICS, ANCHOR_ISO } from "./data.js";
 
 const ANCHOR_MS = new Date(ANCHOR_ISO).getTime();
 
-// Runtime overrides (e.g. live BTC price) — base value gets replaced in place.
+// Runtime overrides from live data sources (CoinGecko, StatCan).
+// Each override may carry any subset of { value, asOfMs, perSecond } and is
+// merged over the seed definition. `asOfMs` lets a data point dated in the past
+// (e.g. M2 as of April 1) be extrapolated forward to "now" at the live rate.
 const overrides = new Map();
 
-export function setOverride(metricId, baseValue) {
-  overrides.set(metricId, baseValue);
+export function setOverride(metricId, override) {
+  const prev = overrides.get(metricId) || {};
+  overrides.set(metricId, { ...prev, ...override });
 }
 
 // Evaluate one linear metric at time `nowMs`.
 function evalLinear(id, def, nowMs) {
-  const epochMs = def.epochISO ? new Date(def.epochISO).getTime() : ANCHOR_MS;
-  const base = overrides.has(id) ? overrides.get(id) : def.base;
+  const ov = overrides.get(id) || {};
+  const base = ov.value ?? def.base;
+  const epochMs =
+    ov.asOfMs ?? (def.epochISO ? new Date(def.epochISO).getTime() : ANCHOR_MS);
+  const ps = ov.perSecond ?? def.perSecond;
   const elapsedSec = (nowMs - epochMs) / 1000;
-  let val = base + def.perSecond * elapsedSec;
+  let val = base + ps * elapsedSec;
   if (typeof def.max === "number") val = Math.min(val, def.max);
   if (typeof def.min === "number") val = Math.max(val, def.min);
   return val;

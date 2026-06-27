@@ -53,19 +53,13 @@ function render(values) {
   }
 }
 
-// Live data (BTC price) — update the status pill.
+// Live data (CoinGecko + StatCan) — update the status pill.
 const statusPill = document.querySelector("#live-status");
 startLive((s) => {
   if (!statusPill) return;
-  if (s.ok) {
-    statusPill.textContent = "● LIVE — BTC price from CoinGecko";
-    statusPill.classList.add("live");
-    statusPill.classList.remove("seed");
-  } else {
-    statusPill.textContent = "● SEED — using stored estimates (offline)";
-    statusPill.classList.add("seed");
-    statusPill.classList.remove("live");
-  }
+  statusPill.textContent = s.text;
+  statusPill.classList.toggle("live", s.ok);
+  statusPill.classList.toggle("seed", !s.ok);
 });
 
 // Stamp the "data as of" line.
