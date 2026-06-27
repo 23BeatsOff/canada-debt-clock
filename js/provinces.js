@@ -27,13 +27,6 @@ function severityColor(value, min, max) {
   return `hsl(${hue}, 75%, 52%)`;
 }
 
-const fmtMoney = (n) =>
-  new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD",
-    maximumFractionDigits: 0,
-  }).format(n);
-
 export function renderProvinces(container) {
   if (!container) return;
   const values = PROVINCES.map((p) => p.debtToGDP);
@@ -45,14 +38,13 @@ export function renderProvinces(container) {
     .map((p) => {
       const color = severityColor(p.debtToGDP, min - 5, max);
       const width = (p.debtToGDP / max) * 100;
-      const perPerson = p.perPerson ? ` · ${fmtMoney(p.perPerson)}/person` : "";
       return `
       <div class="prov-row">
         <span class="prov-name" title="${p.name}">${p.code}</span>
         <div class="prov-track">
           <div class="prov-fill" style="width:${width}%; background:${color}; color:${color}"></div>
         </div>
-        <span class="prov-val">${p.debtToGDP.toFixed(1)}%<span class="prov-pp">${perPerson}</span></span>
+        <span class="prov-val">${p.debtToGDP.toFixed(1)}%</span>
       </div>`;
     })
     .join("");
