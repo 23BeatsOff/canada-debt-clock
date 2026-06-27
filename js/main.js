@@ -7,8 +7,11 @@
 //  This loop formats every bound element each frame. No framework needed.
 // =============================================================================
 
-import { start } from "./clock.js";
+import { start, snapshot } from "./clock.js";
 import { startLive } from "./live.js";
+import { createOdometer } from "./odometer.js";
+import { renderProvinces } from "./provinces.js";
+import { initShareCard } from "./sharecard.js";
 import * as fmt from "./format.js";
 
 const FORMATTERS = {
@@ -24,11 +27,13 @@ const FORMATTERS = {
   plain1: (n) => n.toFixed(1),
 };
 
-// Collect bound elements once.
+// Collect bound elements once. Elements with `data-odometer` get a digit-roll
+// counter (driven by the raw value); the rest update their textContent.
 const bound = [...document.querySelectorAll("[data-metric]")].map((el) => ({
   el,
   metric: el.dataset.metric,
   format: FORMATTERS[el.dataset.format] || fmt.count,
+  odometer: "odometer" in el.dataset ? createOdometer(el) : null,
   last: null,
 }));
 
@@ -40,6 +45,10 @@ function render(values) {
   for (const b of bound) {
     const v = values[b.metric];
     if (v === undefined) continue;
+    if (b.odometer) {
+      b.odometer.set(v);
+      continue;
+    }
     const text = b.format(v);
     if (text !== b.last) {
       b.el.textContent = text;
@@ -61,6 +70,12 @@ startLive((s) => {
   statusPill.classList.toggle("live", s.ok);
   statusPill.classList.toggle("seed", !s.ok);
 });
+
+// Static per-province breakdown (annual figures, no ticking needed).
+renderProvinces(document.querySelector("#province-bars"));
+
+// Shareable "your debt in sats" card — snapshots the live values on click.
+initShareCard(document.querySelector("#share-card-btn"), () => snapshot(Date.now()));
 
 // Stamp the "data as of" line.
 const asOfEl = document.querySelector("#as-of");

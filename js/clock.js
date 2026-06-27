@@ -63,7 +63,8 @@ export function snapshot(nowMs = Date.now()) {
   return values;
 }
 
-// Drive a render callback at the display refresh rate.
+// Drive a render callback at the display refresh rate, with a 1s fallback so a
+// backgrounded tab (where requestAnimationFrame is paused) still stays current.
 export function start(onFrame) {
   let raf;
   const loop = () => {
@@ -71,5 +72,11 @@ export function start(onFrame) {
     raf = requestAnimationFrame(loop);
   };
   loop();
-  return () => cancelAnimationFrame(raf);
+  const fallback = setInterval(() => {
+    if (document.hidden) onFrame(snapshot(Date.now()));
+  }, 1000);
+  return () => {
+    cancelAnimationFrame(raf);
+    clearInterval(fallback);
+  };
 }

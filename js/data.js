@@ -69,6 +69,13 @@ export const FIGURES = {
     source: "Annual Financial Report 2024-25 — public debt charges $53.4B (rising)",
   },
 
+  // ---- Debt interest (the visceral one) -----------------------------------
+  combinedInterestPerYear: {
+    value: 94_000_000_000,               // $94B/yr fed+provincial interest
+    asOf: "2026-03-31",
+    source: "Fraser Institute — Canadians paid ≥$94B in government debt interest, FY2025-26",
+  },
+
   // ---- Federal + provincial (net debt) ------------------------------------
   totalGovDebt: {
     value: 2_461_000_000_000,            // ≈$2.46T at 2026-06-27
@@ -160,6 +167,18 @@ export const METRICS = {
     base: 0,
     perSecond: perSecond(FIGURES.federalDeficitPerYear.value),
     epochISO: FISCAL_YEAR_START_ISO,
+  },
+  combinedInterestYTD: {
+    // Federal + provincial debt interest paid since April 1.
+    kind: "linear",
+    base: 0,
+    perSecond: perSecond(FIGURES.combinedInterestPerYear.value),
+    epochISO: FISCAL_YEAR_START_ISO,
+  },
+  combinedInterestPerSecond: {
+    kind: "linear",
+    base: FIGURES.combinedInterestPerYear.value / (365.25 * 24 * 60 * 60),
+    perSecond: 0,
   },
   population: {
     kind: "linear",

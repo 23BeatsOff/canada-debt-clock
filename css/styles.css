@@ -74,6 +74,35 @@ body {
   font-feature-settings: "tnum" 1;
 }
 
+/* ---------- Odometer (digit-roll) ---------- */
+.odometer {
+  display: inline-flex;
+  align-items: flex-start;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.od-prefix,
+.od-sep {
+  display: inline-block;
+}
+.od-digit {
+  display: inline-block;
+  height: 1em;
+  width: 1ch;
+  overflow: hidden;
+  position: relative;
+}
+.od-ribbon {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+.od-ribbon span {
+  display: block;
+  height: 1em;
+  text-align: center;
+}
+
 /* ---------- Header ---------- */
 .topbar {
   max-width: var(--maxw);
@@ -200,6 +229,43 @@ body {
 .value.warn { color: var(--warn); text-shadow: 0 0 22px rgba(255, 210, 77, 0.3); }
 .hint { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
 
+/* ---------- Interest band ---------- */
+.interest-band {
+  max-width: var(--maxw);
+  margin: 34px auto 0;
+  padding: 30px clamp(18px, 3vw, 40px);
+  border-radius: 22px;
+  text-align: center;
+  border: 1px solid rgba(255, 77, 79, 0.28);
+  background:
+    radial-gradient(700px 220px at 50% 0%, rgba(255, 77, 79, 0.14), transparent 70%),
+    var(--bg-2);
+  box-shadow: inset 0 0 60px -30px var(--debt-glow);
+}
+.interest-label {
+  font-family: var(--font-num);
+  letter-spacing: 3px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.interest-number {
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: clamp(26px, 5.5vw, 56px);
+  letter-spacing: -1px;
+  line-height: 1;
+  color: var(--debt);
+  text-shadow: 0 0 28px var(--debt-glow);
+}
+.interest-sub {
+  margin: 16px auto 0;
+  max-width: 720px;
+  color: var(--muted);
+  font-size: clamp(13px, 1.8vw, 16px);
+}
+.interest-sub strong { color: var(--text); }
+
 /* ---------- Panels ---------- */
 .panel {
   max-width: var(--maxw);
@@ -229,6 +295,55 @@ body {
 .panel-head p { color: var(--muted); font-size: clamp(13px, 1.7vw, 16px); }
 .panel-head strong { color: var(--text); }
 .btc-mark { text-shadow: 0 0 22px var(--btc-glow); }
+
+/* ---------- Provinces ---------- */
+.panel.provinces {
+  background:
+    radial-gradient(700px 220px at 20% 0%, rgba(70, 194, 255, 0.06), transparent 70%),
+    var(--bg-2);
+}
+.prov-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.prov-row {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+.prov-name {
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+}
+.prov-track {
+  height: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.prov-fill {
+  height: 100%;
+  border-radius: 7px;
+  transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 0 14px -2px currentColor;
+}
+.prov-val {
+  font-family: var(--font-num);
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.prov-pp { color: var(--accent); }
+.prov-foot {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
 
 /* ---------- Bitcoin layout ---------- */
 .btc-layout {
@@ -264,6 +379,34 @@ body {
 
 .btc-card { border-color: rgba(247, 147, 26, 0.18); }
 .btc-val { color: var(--btc); text-shadow: 0 0 22px var(--btc-glow); }
+
+/* ---------- Share card button ---------- */
+.share-row {
+  margin-top: 26px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+}
+.share-btn {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1205;
+  background: linear-gradient(180deg, #ffb347, var(--btc));
+  border: none;
+  border-radius: 12px;
+  padding: 14px 22px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -10px var(--btc-glow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.share-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 38px -12px var(--btc-glow); }
+.share-btn:active { transform: translateY(0); }
+.share-btn:disabled { opacity: 0.7; cursor: default; transform: none; }
+.share-hint { font-size: 13px; color: var(--muted); }
 
 /* ---------- Footer ---------- */
 .footer {

@@ -31,9 +31,7 @@
     <!-- ===================== HERO ===================== -->
     <section class="hero">
       <div class="hero-label">CANADA · FEDERAL DEBT</div>
-      <div class="hero-number debt" data-metric="federalDebt" data-format="money">
-        $0
-      </div>
+      <div class="hero-number debt" data-metric="federalDebt" data-odometer>$0</div>
       <div class="hero-sub">
         Federal + provincial net debt:
         <span class="accent" data-metric="totalGovDebt" data-format="money">$0</span>
@@ -76,6 +74,38 @@
           <span class="accent" data-metric="totalDebtPerCitizen" data-format="moneyCents">$0</span>
         </p>
       </article>
+    </section>
+
+    <!-- ===================== INTEREST BAND ===================== -->
+    <section class="interest-band">
+      <div class="interest-label">GOVERNMENT DEBT INTEREST · PAID THIS FISCAL YEAR</div>
+      <div class="interest-number" data-metric="combinedInterestYTD" data-odometer>$0</div>
+      <div class="interest-sub">
+        Federal + provincial. That's
+        <span class="accent" data-metric="combinedInterestPerSecond" data-format="moneyCents">$0</span>
+        <strong>every second</strong> — roughly
+        <span class="accent">$94&nbsp;billion a year</span>, money that buys nothing
+        but the right to keep borrowing. More than Ottawa spends on the Canada Child
+        Benefit and national childcare combined.
+      </div>
+    </section>
+
+    <!-- ===================== PROVINCES ===================== -->
+    <section class="panel provinces">
+      <div class="panel-head">
+        <h2>The Burden by Province</h2>
+        <p>
+          Combined federal + provincial net debt as a share of each province's
+          economy. Newfoundland &amp; Labrador carries the heaviest load per
+          person at <strong>$71,611</strong>; Alberta the lightest at
+          <strong>$42,368</strong>. No province is debt-free.
+        </p>
+      </div>
+      <div id="province-bars" class="prov-bars"></div>
+      <p class="prov-foot">
+        % of provincial GDP · combined federal + provincial net debt · Fraser
+        Institute, 2026.
+      </p>
     </section>
 
     <!-- ===================== AUSTRIAN PANEL ===================== -->
@@ -178,6 +208,13 @@
             </p>
           </article>
         </div>
+      </div>
+
+      <div class="share-row">
+        <button id="share-card-btn" class="share-btn">
+          ↓ Generate my "debt in sats" card
+        </button>
+        <span class="share-hint">A shareable image of your number, at the live price.</span>
       </div>
     </section>
 
