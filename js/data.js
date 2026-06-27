@@ -38,79 +38,85 @@ const perSecond = (perYear) => perYear / SECONDS_PER_YEAR;
 //  RAW FIGURES  (edit these; everything else is derived)
 // =============================================================================
 //  NOTE: all dollar figures are CANADIAN DOLLARS.
-//  All values below are seeded estimates for 2026-06-27 — marked VERIFY where
-//  they need reconciliation against the live primary source.
+//  Values are reconciled to primary sources (2025–26). Each `base` is the
+//  figure extrapolated to the ANCHOR date (2026-06-27); `asOf` names the date
+//  of the underlying source observation it was projected from.
 
 export const FIGURES = {
   // ---- Federal government -------------------------------------------------
   federalDebt: {
-    value: 1_420_000_000_000,            // ~$1.42T accumulated deficit  // VERIFY
-    perYear: 50_000_000_000,             // grows by the annual deficit  // VERIFY
-    asOf: ANCHOR_ISO,
-    source: "Public Accounts of Canada / Dept. of Finance Fiscal Tables",
+    // Accumulated deficit: $1,266.5B at 2025-03-31 + $78.3B FY25-26 deficit
+    // ≈ $1,344.8B at 2026-04-01, then growing by the FY26-27 deficit.
+    value: 1_360_500_000_000,            // ≈$1.36T at 2026-06-27
+    perYear: 66_900_000_000,             // grows by the annual deficit
+    asOf: "2025-03-31",
+    source:
+      "Annual Financial Report 2024-25 ($1,266.5B) + Budget 2025 (FY25-26 deficit $78.3B)",
   },
   federalDeficitPerYear: {
-    value: 50_000_000_000,               // ~$50B/yr                     // VERIFY
-    asOf: ANCHOR_ISO,
-    source: "Budget 2026 / Fall Economic Statement",
+    value: 66_900_000_000,               // $66.9B (FY2026-27)
+    asOf: "2026-05-01",
+    source: "Spring 2026 Economic Update (deficit $66.9B); Budget 2025",
   },
   federalInterestPerYear: {
-    value: 55_000_000_000,               // public debt charges ~$55B/yr // VERIFY
-    asOf: ANCHOR_ISO,
-    source: "Public Accounts of Canada — Public Debt Charges",
+    value: 56_000_000_000,               // public debt charges, rising
+    asOf: "2025-03-31",
+    source: "Annual Financial Report 2024-25 — public debt charges $53.4B (rising)",
   },
 
-  // ---- All governments combined (federal + provincial + municipal) --------
+  // ---- Federal + provincial (net debt) ------------------------------------
   totalGovDebt: {
-    value: 2_550_000_000_000,            // ~$2.55T combined gross       // VERIFY
-    perYear: 75_000_000_000,             // combined annual borrowing    // VERIFY
-    asOf: ANCHOR_ISO,
-    source: "Federal Public Accounts + provincial public accounts + FCM",
+    value: 2_461_000_000_000,            // ≈$2.46T at 2026-06-27
+    perYear: 90_000_000_000,             // combined annual net borrowing
+    asOf: "2026-03-31",
+    source:
+      "Fraser Institute, May 2026 — combined federal+provincial net debt $2.44T (FY2025-26)",
   },
 
   // ---- People -------------------------------------------------------------
   population: {
-    value: 41_600_000,                   // ~41.6M                        // VERIFY
-    perYear: 500_000,                    // ~+1.2%/yr                     // VERIFY
-    asOf: ANCHOR_ISO,
-    source: "Statistics Canada — Quarterly Population Estimates",
+    // Declined in Q1 2026 (first drop since Confederation, NPR drawdown).
+    value: 41_393_000,                   // ≈41.39M at 2026-06-27
+    perYear: -100_000,                   // mild decline; revisit Sept 2026
+    asOf: "2026-04-01",
+    source: "Statistics Canada — Q1 2026 population estimate (41,417,056)",
   },
   taxpayers: {
-    value: 28_500_000,                   // tax filers                    // VERIFY
-    perYear: 350_000,
-    asOf: ANCHOR_ISO,
-    source: "Canada Revenue Agency — tax filer statistics",
+    value: 29_500_000,                   // tax filers (approx)
+    perYear: 100_000,
+    asOf: "2024-12-31",
+    source: "Canada Revenue Agency — individual tax filer statistics (approx)",
   },
 
   // ---- Monetary (the Austrian centerpiece) --------------------------------
   moneySupplyM2: {
-    value: 2_050_000_000_000,            // M2 ~$2.05T                    // VERIFY
-    perYear: 123_000_000_000,            // ~+6%/yr debasement            // VERIFY
-    asOf: ANCHOR_ISO,
-    source: "Statistics Canada / Bank of Canada — Monetary Aggregates (M2)",
+    value: 2_865_000_000_000,            // ≈$2.87T at 2026-06-27
+    perYear: 200_000_000_000,            // ~+7%/yr debasement
+    asOf: "2026-04-30",
+    source: "Bank of Canada / StatCan — M2 monetary aggregate ($2,816.9B, Apr 2026)",
   },
   cpiInflationRate: {
-    value: 0.028,                        // official CPI ~2.8%/yr         // VERIFY
-    asOf: ANCHOR_ISO,
-    source: "Statistics Canada — Consumer Price Index (Valet: CPIXCORE/STATIC)",
+    value: 0.032,                        // 3.2% YoY (May 2026)
+    asOf: "2026-05-31",
+    source: "Statistics Canada — CPI, May 2026 (+3.2% YoY)",
   },
   gdp: {
-    value: 3_050_000_000_000,            // nominal GDP ~$3.05T           // VERIFY
-    perYear: 122_000_000_000,            // ~+4% nominal                  // VERIFY
-    asOf: ANCHOR_ISO,
-    source: "Statistics Canada — GDP, income & expenditure",
+    value: 3_200_000_000_000,            // ≈$3.2T at 2026-06-27
+    perYear: 130_000_000_000,            // ~+4% nominal
+    asOf: "2026-03-31",
+    source: "Implied from Budget 2025 (deficit 2.5% of GDP) — nominal GDP ≈$3.13T FY25-26",
   },
 
   // ---- Bitcoin ------------------------------------------------------------
   btcMined: {
-    value: 19_880_000,                   // circulating supply            // VERIFY
+    value: 20_049_000,                   // circulating supply (block 955,702)
     perYear: 450 * 365.25,               // ~450 BTC/day @ 3.125 reward
-    asOf: ANCHOR_ISO,
-    source: "Bitcoin network — block subsidy (3.125 BTC/block post-2024 halving)",
+    asOf: "2026-06-27",
+    source: "mempool.space block height 955,702 + CoinGecko circulating supply",
   },
   btcPriceCAD: {
-    value: 120_000,                      // seed; overridden live         // LIVE
-    asOf: ANCHOR_ISO,
+    value: 85_000,                       // seed; overridden live         // LIVE
+    asOf: "2026-06-27",
     source: "CoinGecko (live) — simple/price?ids=bitcoin&vs_currencies=cad",
   },
 };
