@@ -17,7 +17,37 @@
     <!-- ===================== HEADER ===================== -->
     <header class="topbar">
       <div class="brand">
-        <span class="maple">🍁</span>
+        <svg class="brand-doodle" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="dci" x="-30%" y="-30%" width="160%" height="160%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.021" numOctaves="2" seed="412" result="n"></feTurbulence>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="2.7" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+            </filter>
+            <filter id="dcf" x="-30%" y="-30%" width="160%" height="160%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" seed="425" result="n"></feTurbulence>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="4.4" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+            </filter>
+          </defs>
+          <g transform="rotate(-4 50 50)">
+            <!-- offset marker fill -->
+            <g filter="url(#dcf)" transform="translate(1.6 2.2)" opacity="0.9" stroke="none">
+              <circle cx="50" cy="58" r="21" fill="#F7931A"></circle>
+            </g>
+            <!-- rough ink outline -->
+            <g filter="url(#dci)" fill="none" stroke="#eef2f7" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M32 39 C29 27, 43 27, 41 37"></path>
+              <path d="M59 37 C57 27, 71 27, 68 39"></path>
+              <path d="M50 33 L50 29"></path>
+              <circle cx="50" cy="26.5" r="2.4"></circle>
+              <circle cx="50" cy="58" r="21"></circle>
+              <path d="M36 78 L30 85"></path>
+              <path d="M64 78 L70 85"></path>
+              <path d="M50 58 L50 46"></path>
+              <path d="M50 58 L61 61"></path>
+              <circle cx="50" cy="58" r="1.9" fill="#eef2f7" stroke="none"></circle>
+            </g>
+          </g>
+        </svg>
         <span class="brand-name">The Canadian Debt Clock</span>
       </div>
       <div id="live-status" class="status-pill seed">● connecting…</div>

@@ -122,7 +122,12 @@ body {
   font-size: clamp(16px, 2.4vw, 20px);
   letter-spacing: 0.2px;
 }
-.maple { filter: drop-shadow(0 0 8px var(--debt-glow)); }
+.brand-doodle {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  filter: drop-shadow(0 0 10px var(--btc-glow));
+}
 .brand-name { background: linear-gradient(90deg, #fff, #cfe0f5); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 .status-pill {
