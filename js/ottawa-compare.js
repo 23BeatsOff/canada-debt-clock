@@ -1,35 +1,39 @@
 // =============================================================================
-//  ottawa-compare.js — rotating "More than Ottawa spends on …" comparison
+//  ottawa-compare.js — rotating "For context, Ottawa spends $X on Y per year"
 // =============================================================================
-//  The interest bill runs ~$94 billion a year. Each phrase below names a
-//  federal program that costs less than that, so "More than Ottawa spends on X"
-//  stays true. The line cycles to the next item every couple of hours, picked
-//  deterministically from the clock so every visitor sees the same one.
+//  The interest bill runs ~$94 billion a year. To put that in perspective, the
+//  line names a major federal program and what it actually costs. It cycles to
+//  the next program every couple of hours, picked deterministically from the
+//  clock so every visitor sees the same one at the same time.
+//
+//  Figures are total federal spending for 2024-25 (rounded to the nearest
+//  billion); all sit below the ~$94B/year interest bill.
 // =============================================================================
 
-// Each string completes "More than Ottawa spends on ___". All comfortably
-// below the ~$94B/year interest bill (approximate annual federal spending).
-export const COMPARISONS = [
-  "the Canada Child Benefit and national childcare combined", // ~$35B
-  "national defence", // ~$41B
-  "the Canada Health Transfer to every province", // ~$52B
-  "Employment Insurance benefits for every jobless worker", // ~$26B
-  "all of Indigenous Services Canada", // ~$40B
-  "the GST credit and carbon rebate combined", // ~$20B
+// `amount` fills the dollar figure, `program` completes
+// "Ottawa spends <amount> on <program> per year".
+export const PROGRAMS = [
+  { amount: "$80&nbsp;billion", program: "Old Age Security" },
+  { amount: "$52&nbsp;billion", program: "the Canada Health Transfer" },
+  { amount: "$35&nbsp;billion", program: "national defence" },
+  { amount: "$28&nbsp;billion", program: "Employment Insurance" },
+  { amount: "$26&nbsp;billion", program: "the Canada Child Benefit" },
+  { amount: "$9&nbsp;billion", program: "$10-a-day child care" },
 ];
 
 const ROTATE_MS = 2 * 60 * 60 * 1000; // a couple of hours
 
-// Deterministic pick: same window → same phrase for everyone.
+// Deterministic pick: same window → same program for everyone.
 function currentIndex(now = Date.now()) {
-  return Math.floor(now / ROTATE_MS) % COMPARISONS.length;
+  return Math.floor(now / ROTATE_MS) % PROGRAMS.length;
 }
 
 export function initOttawaCompare(el) {
   if (!el) return;
   const apply = () => {
-    const text = COMPARISONS[currentIndex()];
-    if (el.textContent !== text) el.textContent = text;
+    const { amount, program } = PROGRAMS[currentIndex()];
+    const html = `<span class="accent">${amount}</span> on ${program}`;
+    if (el.innerHTML !== html) el.innerHTML = html;
   };
   apply();
   // Re-check periodically so a long-open tab rolls over on schedule.
