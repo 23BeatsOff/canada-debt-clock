@@ -32,6 +32,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -173,7 +174,7 @@ body {
 .hero-number {
   font-family: var(--font-num);
   font-weight: 700;
-  font-size: clamp(30px, 7vw, 76px);
+  font-size: clamp(20px, 7vw, 76px);
   letter-spacing: -1px;
   line-height: 1;
 }
@@ -441,5 +442,35 @@ body {
   .foot-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 540px) {
+  body { padding: 0 12px 48px; }
   .grid, .grid.three, .grid.two { grid-template-columns: 1fr; }
+
+  /* Header: brand and status stack and stay centered */
+  .topbar { justify-content: center; gap: 10px; padding-top: 18px; }
+  .status-pill {
+    white-space: normal;
+    max-width: 100%;
+    text-align: center;
+    font-size: 11px;
+  }
+
+  /* Hero: tighter padding, looser letter-spacing so digits don't crowd */
+  .hero { padding: 26px 12px 24px; border-radius: 18px; }
+  .hero-label { letter-spacing: 2px; }
+  .hero-number { letter-spacing: 0; }
+  .hero-context { gap: 6px 10px; }
+
+  /* Panels and bands: trim padding */
+  .panel, .interest-band { padding: 22px 16px; border-radius: 18px; }
+  .interest-sub { font-size: 13px; }
+
+  /* Cards a touch tighter */
+  .card { padding: 16px; }
+
+  /* Province rows: drop the per-person suffix to give the bar room */
+  .prov-pp { display: none; }
+  .prov-row { grid-template-columns: 30px 1fr auto; gap: 9px; }
+
+  /* Share row stacks */
+  .share-row { flex-direction: column; gap: 10px; }
 }

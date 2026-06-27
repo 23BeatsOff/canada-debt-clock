@@ -33,12 +33,12 @@ let emit = () => {};
 
 function pushStatus() {
   const parts = [];
-  if (status.statcan) parts.push("StatCan macro data");
-  if (status.btc) parts.push("CoinGecko BTC price");
+  if (status.statcan) parts.push("StatCan");
+  if (status.btc) parts.push("CoinGecko");
   const ok = status.btc || status.statcan;
   const text = ok
     ? `● LIVE — ${parts.join(" + ")}`
-    : "● SEED — stored estimates (offline)";
+    : "● SEED — offline estimates";
   emit({ ok, text });
 }
 
