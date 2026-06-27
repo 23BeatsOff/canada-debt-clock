@@ -295,4 +295,15 @@ export const METRICS = {
     deps: ["moneySupplyM2"],
     compute: (v) => M2_2020 / v.moneySupplyM2,
   },
+  // New money created since 2020 — the cause of the debasement above.
+  moneyPrintedSince2020: {
+    kind: "derived",
+    deps: ["moneySupplyM2"],
+    compute: (v) => v.moneySupplyM2 - M2_2020,
+  },
+  shareCreatedSince2020: {
+    kind: "derived",
+    deps: ["moneySupplyM2"],
+    compute: (v) => ((v.moneySupplyM2 - M2_2020) / v.moneySupplyM2) * 100,
+  },
 };
