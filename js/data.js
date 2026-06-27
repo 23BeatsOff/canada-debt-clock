@@ -279,25 +279,7 @@ export const METRICS = {
     compute: (v) => (v.btcMined / BTC_HARD_CAP) * 100,
   },
 
-  // --- Maxi: scarcity, issuance, the halving ------------------------------
-  // Block height derived from supply: 19,687,500 BTC were mined by the 2024
-  // halving at block 840,000; every block since adds 3.125 BTC.
-  btcBlockHeight: {
-    kind: "derived",
-    deps: ["btcMined"],
-    compute: (v) => 840_000 + (v.btcMined - 19_687_500) / 3.125,
-  },
-  blocksToHalving: {
-    kind: "derived",
-    deps: ["btcMined"],
-    compute: (v) => 1_050_000 - (840_000 + (v.btcMined - 19_687_500) / 3.125),
-  },
-  daysToHalving: {
-    kind: "derived",
-    deps: ["btcMined"],
-    compute: (v) =>
-      (1_050_000 - (840_000 + (v.btcMined - 19_687_500) / 3.125)) / 144,
-  },
+  // --- Maxi: scarcity, issuance -------------------------------------------
   // Bitcoin's annual new-supply rate — falls every halving, toward zero.
   btcIssuanceRate: {
     kind: "derived",
@@ -309,12 +291,6 @@ export const METRICS = {
     kind: "derived",
     deps: ["btcPriceCAD"],
     compute: (v) => 100_000_000 / v.btcPriceCAD,
-  },
-  // Stock-to-flow: existing supply ÷ annual new supply (climbs each halving).
-  stockToFlow: {
-    kind: "derived",
-    deps: ["btcMined"],
-    compute: (v) => v.btcMined / (450 * 365.25),
   },
   // The scarcity bomb: every human's fair share of all Bitcoin, ever.
   btcPerHuman: {
