@@ -91,3 +91,10 @@ const asOfEl = document.querySelector("#as-of");
 if (asOfEl) asOfEl.textContent = new Date().toLocaleString("en-CA");
 
 start(render);
+
+// Register the service worker for offline support + installability (PWA).
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+}
