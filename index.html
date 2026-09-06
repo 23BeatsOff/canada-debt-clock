@@ -41,7 +41,7 @@
     />
     <meta name="twitter:image" content="https://canadiandebtclock.com/og-image.jpg" />
 
-    <meta name="theme-color" content="#0a0e14" />
+    <meta name="theme-color" content="#fcfcfc" />
     <link rel="preconnect" href="https://api.coingecko.com" />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
@@ -68,7 +68,7 @@
               <circle cx="50" cy="58" r="21" fill="#F7931A"></circle>
             </g>
             <!-- rough ink outline -->
-            <g filter="url(#dci)" fill="none" stroke="#eef2f7" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+            <g filter="url(#dci)" fill="none" stroke="#241f1a" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
               <path d="M32 39 C29 27, 43 27, 41 37"></path>
               <path d="M59 37 C57 27, 71 27, 68 39"></path>
               <path d="M50 33 L50 29"></path>
@@ -78,7 +78,7 @@
               <path d="M64 78 L70 85"></path>
               <path d="M50 58 L50 46"></path>
               <path d="M50 58 L61 61"></path>
-              <circle cx="50" cy="58" r="1.9" fill="#eef2f7" stroke="none"></circle>
+              <circle cx="50" cy="58" r="1.9" fill="#241f1a" stroke="none"></circle>
             </g>
           </g>
         </svg>
@@ -94,6 +94,7 @@
 
     <!-- ===================== HERO ===================== -->
     <section class="hero">
+      <img class="hero-doodle" src="assets/doodles/city-hall.svg" alt="" aria-hidden="true" />
       <div class="hero-label">CANADA · FEDERAL DEBT</div>
       <div class="hero-number debt" data-metric="federalDebt" data-odometer>$0</div>
       <div class="hero-sub">
@@ -142,6 +143,7 @@
 
     <!-- ===================== INTEREST BAND ===================== -->
     <section class="interest-band">
+      <img class="hero-doodle" src="assets/doodles/burning-banknote.svg" alt="" aria-hidden="true" />
       <div class="interest-label">GOVERNMENT DEBT INTEREST · PAID THIS FISCAL YEAR</div>
       <div class="interest-number" data-metric="combinedInterestYTD" data-odometer>$0</div>
       <div class="interest-sub">
@@ -158,7 +160,10 @@
     <!-- ===================== PROVINCES ===================== -->
     <section class="panel provinces">
       <div class="panel-head">
-        <h2>The Burden by Province</h2>
+        <div class="ph-title">
+          <img class="head-doodle" src="assets/doodles/balance-scales.svg" alt="" aria-hidden="true" />
+          <h2>The Burden by Province</h2>
+        </div>
         <p>
           Combined federal + provincial net debt as a share of each province's
           economy. Newfoundland &amp; Labrador carries the heaviest load per
@@ -176,7 +181,10 @@
     <!-- ===================== AUSTRIAN PANEL ===================== -->
     <section class="panel austrian">
       <div class="panel-head">
-        <h2>The Hidden Tax</h2>
+        <div class="ph-title">
+          <img class="head-doodle" src="assets/doodles/money-printer.svg" alt="" aria-hidden="true" />
+          <h2>The Hidden Tax</h2>
+        </div>
         <p>
           The debt above is the <em>small</em> lie. The big one is the dollar it's
           measured in. When the money supply expands faster than the economy, your
@@ -227,7 +235,10 @@
     <!-- ===================== BITCOIN PANEL ===================== -->
     <section class="panel bitcoin">
       <div class="panel-head">
-        <h2><span class="btc-mark">₿</span> Priced in Hard Money</h2>
+        <div class="ph-title">
+          <img class="head-doodle" src="assets/doodles/cap-21m.svg" alt="" aria-hidden="true" />
+          <h2><span class="btc-mark">₿</span> Priced in Hard Money</h2>
+        </div>
         <p>
           Government debt grows without limit. Bitcoin's supply is capped at
           <strong>21,000,000</strong> — forever. Here is the debt measured against
