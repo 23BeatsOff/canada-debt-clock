@@ -233,6 +233,55 @@
       </div>
     </section>
 
+    <!-- ===================== TRUE RETURN ===================== -->
+    <section class="panel truereturn" id="true-return">
+      <div class="panel-head">
+        <div class="ph-title">
+          <img class="head-doodle" src="assets/doodles/line-chart-down.svg" alt="" aria-hidden="true" />
+          <h2>The True Return</h2>
+        </div>
+        <p>
+          Google Finance and Wealthsimple show you a stock in nominal dollars, as if
+          the loonie sat still while you held it. It didn't. Type any TSX or US
+          ticker and see the same position measured against official inflation, and
+          against the money supply itself. The second line is the honest one.
+        </p>
+      </div>
+
+      <form id="tr-form" class="tr-form" autocomplete="off">
+        <label class="tr-label" for="tr-ticker">Ticker</label>
+        <input
+          id="tr-ticker"
+          class="tr-input"
+          type="text"
+          inputmode="text"
+          spellcheck="false"
+          placeholder="SHOP, ENB, RY, AAPL…"
+          maxlength="15"
+          required
+        />
+        <button type="submit" class="share-btn tr-go">Chart it</button>
+        <div id="tr-ranges" class="tr-ranges" role="group" aria-label="Time range"></div>
+      </form>
+
+      <div id="tr-status" class="tr-status" hidden></div>
+
+      <div id="tr-chart-wrap" class="tr-chart-wrap" hidden>
+        <div id="tr-title" class="tr-title"></div>
+        <div id="tr-summary" class="tr-summary"></div>
+        <div class="tr-legend">
+          <span><i style="background:#8c8880"></i>Nominal (CAD)</span>
+          <span><i style="background:#2f6f8f"></i>After CPI</span>
+          <span><i style="background:#d92d20"></i>After M2 growth</span>
+        </div>
+        <div class="tr-canvas-box">
+          <canvas id="tr-chart" class="tr-chart"></canvas>
+          <div id="tr-tip" class="tr-tip" hidden></div>
+        </div>
+        <div id="tr-note" class="tr-note"></div>
+      </div>
+    </section>
+
     <!-- ===================== BITCOIN PANEL ===================== -->
     <section class="panel bitcoin">
       <div class="panel-head">

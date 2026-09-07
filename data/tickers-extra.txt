@@ -1,0 +1,60 @@
+# Extra symbols fetched nightly on top of the S&P/TSX Composite and S&P 500.
+# One Yahoo Finance symbol per line; TSX listings end in .TO. '#' starts a comment.
+# Add a name here and it appears on the site after the next nightly run.
+
+# Canadian broad-market and popular ETFs
+XIU.TO    # iShares S&P/TSX 60
+XIC.TO    # iShares Core S&P/TSX Capped Composite
+ZCN.TO    # BMO S&P/TSX Capped Composite
+VCN.TO    # Vanguard FTSE Canada All Cap
+XEQT.TO   # iShares Core Equity ETF Portfolio
+VEQT.TO   # Vanguard All-Equity ETF Portfolio
+XGRO.TO
+VGRO.TO
+XBAL.TO
+VBAL.TO
+VFV.TO    # Vanguard S&P 500 (CAD)
+ZSP.TO    # BMO S&P 500 (CAD)
+XSP.TO    # iShares S&P 500 (CAD-hedged)
+XUS.TO
+ZQQ.TO    # BMO NASDAQ 100
+XQQ.TO
+HXT.TO
+ZEB.TO    # BMO Equal Weight Banks
+XDV.TO
+VDY.TO
+XEI.TO
+ZDV.TO
+XBB.TO    # iShares Core Canadian Universe Bond
+ZAG.TO
+XAW.TO
+VXC.TO
+XEF.TO
+ZWB.TO
+HMAX.TO
+
+# US broad-market ETFs
+SPY
+VOO
+VTI
+QQQ
+IWM
+DIA
+VEA
+VWO
+SCHD
+GLD
+SLV
+
+# Bitcoin, priced in the money the site is about
+BTC-CAD
+BTC-USD
+IBIT
+FBTC
+BTCC.TO   # Purpose Bitcoin ETF
+EBIT.TO
+MSTR
+COIN
+
+# Gold, for the Austrian crowd
+GC=F      # Gold futures (USD)

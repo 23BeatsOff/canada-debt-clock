@@ -14,6 +14,7 @@ import { renderProvinces } from "./provinces.js";
 import { initShareCard } from "./sharecard.js";
 import { initOttawaCompare } from "./ottawa-compare.js";
 import { initTip } from "./tip.js";
+import { initTrueReturn } from "./truereturn.js";
 import * as fmt from "./format.js";
 
 const FORMATTERS = {
@@ -82,6 +83,9 @@ initOttawaCompare(document.querySelector("#ottawa-compare"));
 
 // Lightning tip — copy-address button.
 initTip(document.querySelector("#tip-copy-btn"));
+
+// "The True Return" — a stock, deflated by CPI and by M2 (Bank of Canada).
+initTrueReturn(document.querySelector("#true-return"));
 
 // Shareable "your debt in sats" card — snapshots the live values on click.
 initShareCard(document.querySelector("#share-card-btn"), () => snapshot(Date.now()));
