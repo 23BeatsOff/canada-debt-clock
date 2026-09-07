@@ -48,7 +48,9 @@ export const RANGES = [
   { id: "5y", label: "5Y" },
 ];
 
-const COLORS = { nom: "#8c8880", real: "#2f6f8f", m2adj: "#d92d20" };
+const COLORS = { nom: "#8c8880", real: "#2f6f8f", m2adj: "#d92d20", inbtc: "#f7931a" };
+const KEYS = ["nom", "real", "m2adj", "inbtc"];
+const WIDTHS = { nom: 1.8, real: 2, m2adj: 2.6, inbtc: 2.2 };
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const iso = (d) => d.toISOString().slice(0, 10);
@@ -168,8 +170,10 @@ function sliceRange(stock, range) {
   let i = pts.findIndex((p) => p.d >= from);
   if (i < 0) i = 0;
   if (i > pts.length - 2) i = Math.max(0, pts.length - 2);
-  // `truncated`: the listing is younger than the range asked for.
-  return { ...stock, points: pts.slice(i), truncated: i === 0 && pts[0].d > from };
+  // `truncated`: the listing itself is younger than the range asked for,
+  // judged by its first trade date, not by where our five-year file starts.
+  const listed = stock.firstTradeDate || pts[0].d;
+  return { ...stock, points: pts.slice(i), truncated: i === 0 && listed > from };
 }
 
 const EXCHANGES = {
@@ -204,8 +208,14 @@ function looksLikeCDR(ca, us) {
 //   both, same company       → the primary market (US for a CDR, TSX for a
 //                              genuine cross-listing), with a flip link
 //   both, different company  → ask (T is Telus on the TSX and AT&T in the US)
+// Plain-English names for the one asset the whole site is about.
+const ALIASES = {
+  BTC: "BTC-CAD", BITCOIN: "BTC-CAD", XBT: "BTC-CAD", "₿": "BTC-CAD", BTCCAD: "BTC-CAD", BTCUSD: "BTC-USD",
+};
+
 async function resolveStock(symbolRaw) {
-  const s = symbolRaw.trim().toUpperCase().replace(/\s+/g, "");
+  let s = symbolRaw.trim().toUpperCase().replace(/\s+/g, "");
+  s = ALIASES[s] || s;
   if (/[.=^-]/.test(s) && !/^[A-Z0-9]+-[A-Z]$/.test(s)) {
     // Explicit listing (SHOP.TO, BTC-CAD, GC=F). A "BRK-B" style share class
     // is still ambiguous between markets, so it falls through to the probe.
@@ -225,26 +235,51 @@ async function resolveStock(symbolRaw) {
   throw e;
 }
 
+// ---------- Bitcoin ----------
+// BTC-CAD comes from the same nightly publish as the stocks (daily closes,
+// seven days a week). Null if unavailable, so the rest of the chart still works.
+async function loadBTC() {
+  try {
+    const j = await fetchOne("BTC-CAD");
+    if (!j) return null;
+    return j.points.map((p) => ({ t: Date.parse(`${p.d}T00:00:00Z`), v: p.c }));
+  } catch {
+    return null;
+  }
+}
+
 // ---------- The arithmetic ----------
-function compute(stock, boc) {
+function compute(stock, boc, btc) {
   const usd = stock.currency === "USD";
+  const isBtc = /^BTC-/.test(stock.symbol);
+  const useBtc = !!btc && !isBtc; // pricing bitcoin in bitcoin is a flat line
   const rows = stock.points.map((p) => {
     const t = Date.parse(`${p.d}T00:00:00Z`);
-    return { t, cad: p.c * (usd ? valueAt(boc.fx, t) : 1), m2: valueAt(boc.m2, t), cpi: valueAt(boc.cpi, t) };
+    const r = { t, cad: p.c * (usd ? valueAt(boc.fx, t) : 1), m2: valueAt(boc.m2, t), cpi: valueAt(boc.cpi, t) };
+    if (useBtc) r.btc = valueAt(btc, t);
+    return r;
   });
   const b = rows[0];
   for (const r of rows) {
     r.nom = (100 * r.cad) / b.cad;      // indexed to 100 at the start of the range
     r.real = (r.nom * b.cpi) / r.cpi;   // in start-of-range purchasing power
     r.m2adj = (r.nom * b.m2) / r.m2;    // as a constant share of the money supply
+    if (useBtc) r.inbtc = (r.nom * b.btc) / r.btc; // priced in bitcoin
   }
   const e = last(rows);
   return {
     rows,
-    ret: { nom: e.nom - 100, real: e.real - 100, m2adj: e.m2adj - 100 },
-    growth: { m2: (e.m2 / b.m2 - 1) * 100, cpi: (e.cpi / b.cpi - 1) * 100 },
+    keys: KEYS.filter((k) => e[k] != null),
+    ret: { nom: e.nom - 100, real: e.real - 100, m2adj: e.m2adj - 100, inbtc: useBtc ? e.inbtc - 100 : null },
+    growth: {
+      m2: (e.m2 / b.m2 - 1) * 100,
+      cpi: (e.cpi / b.cpi - 1) * 100,
+      btc: useBtc ? (e.btc / b.btc - 1) * 100 : null,
+    },
     through: { m2: last(boc.m2).t, cpi: last(boc.cpi).t, fx: last(boc.fx).t },
     usd,
+    isBtc,
+    useBtc,
     truncated: !!stock.truncated,
   };
 }
@@ -260,10 +295,11 @@ function drawChart(canvas, rows, hoverIdx) {
   ctx.scale(dpr, dpr);
   ctx.clearRect(0, 0, W, H);
 
+  const keys = KEYS.filter((k) => rows[0][k] != null);
   const padL = 44, padR = 14, padT = 14, padB = 26;
   const x0 = rows[0].t, x1 = last(rows).t;
   let lo = Infinity, hi = -Infinity;
-  for (const r of rows) for (const k of ["nom", "real", "m2adj"]) { lo = Math.min(lo, r[k]); hi = Math.max(hi, r[k]); }
+  for (const r of rows) for (const k of keys) { lo = Math.min(lo, r[k]); hi = Math.max(hi, r[k]); }
   const padY = (hi - lo) * 0.08 || 5;
   lo -= padY; hi += padY;
   const X = (t) => padL + ((t - x0) / (x1 - x0 || 1)) * (W - padL - padR);
@@ -302,16 +338,14 @@ function drawChart(canvas, rows, hoverIdx) {
     rows.forEach((r, i) => { const x = X(r.t), y = Y(r[k]); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
     ctx.stroke();
   };
-  line("nom", COLORS.nom, 1.8);
-  line("real", COLORS.real, 2);
-  line("m2adj", COLORS.m2adj, 2.6);
+  for (const k of keys) line(k, COLORS[k], WIDTHS[k]);
 
   // Hover crosshair
   if (hoverIdx != null && rows[hoverIdx]) {
     const r = rows[hoverIdx], x = X(r.t);
     ctx.strokeStyle = "rgba(36,31,26,0.35)"; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
-    for (const k of ["nom", "real", "m2adj"]) {
+    for (const k of keys) {
       ctx.fillStyle = COLORS[k];
       ctx.beginPath(); ctx.arc(x, Y(r[k]), 3.6, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.stroke();
@@ -355,7 +389,7 @@ export function initTrueReturn(root) {
     if (state.result && state.boc) {
       state.hover = null;
       tip.hidden = true;
-      state.result.calc = compute(sliceRange(state.result.stock, state.range), state.boc);
+      state.result.calc = compute(sliceRange(state.result.stock, state.range), state.boc, state.btc);
       render();
     } else if (state.symbol) run();
   });
@@ -423,20 +457,34 @@ export function initTrueReturn(root) {
         <span class="tr-s">${noM2
           ? `No M2 print inside this window yet (latest: ${fmtMonth(calc.through.m2)})`
           : `Money supply grew ${calc.growth.m2.toFixed(1)}%`}</span>
-      </div>`;
+      </div>` +
+      (calc.useBtc
+        ? `
+      <div class="tr-stat btc">
+        <span class="tr-k">In Bitcoin</span>
+        <span class="tr-v ${sign(calc.ret.inbtc)}">${pct(calc.ret.inbtc)}</span>
+        <span class="tr-s">Bitcoin ${calc.growth.btc >= 0 ? "rose" : "fell"} ${Math.abs(calc.growth.btc).toFixed(1)}% in CAD</span>
+      </div>`
+        : "");
 
     const gap = calc.ret.nom - calc.ret.m2adj;
     const verdict =
       calc.ret.m2adj >= 0
         ? `it still beat the printer, by <strong>${calc.ret.m2adj.toFixed(1)}%</strong>`
         : `you actually <strong>lost ${Math.abs(calc.ret.m2adj).toFixed(1)}%</strong> of your share of all the money`;
+    const btcLine = calc.useBtc
+      ? ` Priced in bitcoin, the hardest money there is, the same position ` +
+        (calc.ret.inbtc >= 0
+          ? `<strong class="btc">gained ${calc.ret.inbtc.toFixed(1)}%</strong>.`
+          : `<strong class="btc">lost ${Math.abs(calc.ret.inbtc).toFixed(1)}%</strong>.`)
+      : "";
     const punch = noM2
       ? `<p class="tr-punch">The screen says <strong>${pct(calc.ret.nom)}</strong>. The Bank of Canada hasn't published M2 ` +
         `for any month inside this window yet (latest print: <strong>${fmtMonth(calc.through.m2)}</strong>), so the M2 line ` +
-        `can't move. Pick a longer range, or check back after the next release.</p>`
+        `can't move. Pick a longer range, or check back after the next release.${btcLine}</p>`
       : `<p class="tr-punch">The screen says <strong>${pct(calc.ret.nom)}</strong>. Over the same stretch the Bank of Canada ` +
         `grew M2 by <strong>${calc.growth.m2.toFixed(1)}%</strong>. Measured as a constant slice of every loonie in existence, ` +
-        `${verdict}. That ${gap.toFixed(1)}-point gap is the hidden tax on this position.</p>`;
+        `${verdict}. That ${gap.toFixed(1)}-point gap is the hidden tax on this position.${btcLine}</p>`;
     note.innerHTML =
       punch +
       `<p class="tr-method">Window: <strong>${fmtDay(win0)}</strong> to <strong>${fmtDay(win1)}</strong>` +
@@ -445,6 +493,7 @@ export function initTrueReturn(root) {
       `${calc.usd ? ", converted to CAD at the Bank of Canada daily USD/CAD rate" : ""}. ` +
       `CPI through <strong>${fmtMonth(calc.through.cpi)}</strong>, M2 through <strong>${fmtMonth(calc.through.m2)}</strong> ` +
       `(Bank of Canada Valet, monthly, interpolated to trading days and held flat past the latest print). ` +
+      `${calc.useBtc ? "Bitcoin: BTC-CAD daily close, the CAD value of the position divided by the bitcoin price on each trading day. " : ""}` +
       `Indexed to 100 at the start of the window.</p>`;
 
     chartWrap.hidden = false;
@@ -457,9 +506,10 @@ export function initTrueReturn(root) {
     tip.hidden = true;
     setStatus("Pulling prices and Bank of Canada data…");
     try {
-      const [{ stock, alt }, boc] = await Promise.all([resolveStock(state.symbol), loadBoC()]);
+      const [{ stock, alt }, boc, btc] = await Promise.all([resolveStock(state.symbol), loadBoC(), loadBTC()]);
       state.boc = boc;
-      state.result = { stock, alt, calc: compute(sliceRange(stock, state.range), boc) };
+      state.btc = btc;
+      state.result = { stock, alt, calc: compute(sliceRange(stock, state.range), boc, btc) };
       setStatus("");
       render();
       const q = new URLSearchParams(location.search);
@@ -507,7 +557,8 @@ export function initTrueReturn(root) {
       `<div class="tt-d">${fmtDay(r.t)}</div>` +
       `<div><i style="background:${COLORS.nom}"></i>Nominal <b>${r.nom.toFixed(1)}</b></div>` +
       `<div><i style="background:${COLORS.real}"></i>After CPI <b>${r.real.toFixed(1)}</b></div>` +
-      `<div><i style="background:${COLORS.m2adj}"></i>After M2 <b>${r.m2adj.toFixed(1)}</b></div>`;
+      `<div><i style="background:${COLORS.m2adj}"></i>After M2 <b>${r.m2adj.toFixed(1)}</b></div>` +
+      (r.inbtc != null ? `<div><i style="background:${COLORS.inbtc}"></i>In Bitcoin <b>${r.inbtc.toFixed(1)}</b></div>` : "");
     tip.hidden = false;
     const x = e.clientX - rect.left;
     tip.style.left = `${Math.min(x + 14, rect.width - tip.offsetWidth - 4)}px`;

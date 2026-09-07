@@ -243,8 +243,9 @@
         <p>
           Google Finance and Wealthsimple show you a stock in nominal dollars, as if
           the loonie sat still while you held it. It didn't. Type any TSX or US
-          ticker and see the same position measured against official inflation, and
-          against the money supply itself. The second line is the honest one.
+          ticker (or just "bitcoin") and see the same position measured against
+          official inflation, against the money supply itself, and priced in
+          bitcoin. The orange line is the one your broker will never show you.
         </p>
       </div>
 
@@ -256,7 +257,7 @@
           type="text"
           inputmode="text"
           spellcheck="false"
-          placeholder="SHOP, ENB, RY, AAPL…"
+          placeholder="SHOP, XEQT, AAPL, BTC…"
           maxlength="15"
           required
         />
@@ -273,6 +274,7 @@
           <span><i style="background:#8c8880"></i>Nominal (CAD)</span>
           <span><i style="background:#2f6f8f"></i>After CPI</span>
           <span><i style="background:#d92d20"></i>After M2 growth</span>
+          <span><i style="background:#f7931a"></i>In Bitcoin</span>
         </div>
         <div class="tr-canvas-box">
           <canvas id="tr-chart" class="tr-chart"></canvas>
