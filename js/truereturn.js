@@ -158,18 +158,18 @@ function sliceRange(stock, range) {
   const pts = stock.points;
   const end = new Date(`${pts[pts.length - 1].d}T00:00:00Z`);
   let start;
-  if (range === "5y") return stock;
   if (range === "ytd") start = new Date(Date.UTC(end.getUTCFullYear(), 0, 1));
   else {
     start = new Date(end);
-    const months = { "3mo": 3, "6mo": 6, "1y": 12 }[range] ?? 12;
+    const months = { "3mo": 3, "6mo": 6, "1y": 12, "5y": 60 }[range] ?? 12;
     start.setUTCMonth(start.getUTCMonth() - months);
   }
   const from = start.toISOString().slice(0, 10);
   let i = pts.findIndex((p) => p.d >= from);
   if (i < 0) i = 0;
   if (i > pts.length - 2) i = Math.max(0, pts.length - 2);
-  return { ...stock, points: pts.slice(i) };
+  // `truncated`: the listing is younger than the range asked for.
+  return { ...stock, points: pts.slice(i), truncated: i === 0 && pts[0].d > from };
 }
 
 const EXCHANGES = {
@@ -245,6 +245,7 @@ function compute(stock, boc) {
     growth: { m2: (e.m2 / b.m2 - 1) * 100, cpi: (e.cpi / b.cpi - 1) * 100 },
     through: { m2: last(boc.m2).t, cpi: last(boc.cpi).t, fx: last(boc.fx).t },
     usd,
+    truncated: !!stock.truncated,
   };
 }
 
@@ -390,6 +391,10 @@ export function initTrueReturn(root) {
     if (!result) return;
     const { stock, alt, calc } = result;
     const sign = (n) => (n >= 0 ? "pos" : "neg");
+    const win0 = calc.rows[0].t, win1 = last(calc.rows).t;
+    // A deflator held flat across the whole window says nothing about it.
+    const noCpi = win0 >= calc.through.cpi;
+    const noM2 = win0 >= calc.through.m2;
 
     title.innerHTML =
       `<span class="tr-sym">${stock.symbol}</span> ` +
@@ -408,12 +413,16 @@ export function initTrueReturn(root) {
       <div class="tr-stat real">
         <span class="tr-k">After CPI</span>
         <span class="tr-v ${sign(calc.ret.real)}">${pct(calc.ret.real)}</span>
-        <span class="tr-s">Prices rose ${calc.growth.cpi.toFixed(1)}% (official)</span>
+        <span class="tr-s">${noCpi
+          ? `No CPI print inside this window yet (latest: ${fmtMonth(calc.through.cpi)})`
+          : `Prices rose ${calc.growth.cpi.toFixed(1)}% (official)`}</span>
       </div>
       <div class="tr-stat m2">
         <span class="tr-k">After M2 growth</span>
         <span class="tr-v ${sign(calc.ret.m2adj)}">${pct(calc.ret.m2adj)}</span>
-        <span class="tr-s">Money supply grew ${calc.growth.m2.toFixed(1)}%</span>
+        <span class="tr-s">${noM2
+          ? `No M2 print inside this window yet (latest: ${fmtMonth(calc.through.m2)})`
+          : `Money supply grew ${calc.growth.m2.toFixed(1)}%`}</span>
       </div>`;
 
     const gap = calc.ret.nom - calc.ret.m2adj;
@@ -421,15 +430,22 @@ export function initTrueReturn(root) {
       calc.ret.m2adj >= 0
         ? `it still beat the printer, by <strong>${calc.ret.m2adj.toFixed(1)}%</strong>`
         : `you actually <strong>lost ${Math.abs(calc.ret.m2adj).toFixed(1)}%</strong> of your share of all the money`;
+    const punch = noM2
+      ? `<p class="tr-punch">The screen says <strong>${pct(calc.ret.nom)}</strong>. The Bank of Canada hasn't published M2 ` +
+        `for any month inside this window yet (latest print: <strong>${fmtMonth(calc.through.m2)}</strong>), so the M2 line ` +
+        `can't move. Pick a longer range, or check back after the next release.</p>`
+      : `<p class="tr-punch">The screen says <strong>${pct(calc.ret.nom)}</strong>. Over the same stretch the Bank of Canada ` +
+        `grew M2 by <strong>${calc.growth.m2.toFixed(1)}%</strong>. Measured as a constant slice of every loonie in existence, ` +
+        `${verdict}. That ${gap.toFixed(1)}-point gap is the hidden tax on this position.</p>`;
     note.innerHTML =
-      `<p class="tr-punch">The screen says <strong>${pct(calc.ret.nom)}</strong>. Over the same stretch the Bank of Canada ` +
-      `grew M2 by <strong>${calc.growth.m2.toFixed(1)}%</strong>. Measured as a constant slice of every loonie in existence, ` +
-      `${verdict}. That ${gap.toFixed(1)}-point gap is the hidden tax on this position.</p>` +
-      `<p class="tr-method">Prices from Yahoo Finance. Total return (adjusted close: splits and dividends included)` +
+      punch +
+      `<p class="tr-method">Window: <strong>${fmtDay(win0)}</strong> to <strong>${fmtDay(win1)}</strong>` +
+      `${calc.truncated ? " (the listing's whole history; it is younger than the range selected)" : ""}. ` +
+      `Prices from Yahoo Finance. Total return (adjusted close: splits and dividends included)` +
       `${calc.usd ? ", converted to CAD at the Bank of Canada daily USD/CAD rate" : ""}. ` +
       `CPI through <strong>${fmtMonth(calc.through.cpi)}</strong>, M2 through <strong>${fmtMonth(calc.through.m2)}</strong> ` +
       `(Bank of Canada Valet, monthly, interpolated to trading days and held flat past the latest print). ` +
-      `Indexed to 100 at the start of the range.</p>`;
+      `Indexed to 100 at the start of the window.</p>`;
 
     chartWrap.hidden = false;
     drawChart(canvas, calc.rows, state.hover);

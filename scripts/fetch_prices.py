@@ -136,18 +136,19 @@ def normalize(data, sym):
 
 
 def fetch(sym):
-    for attempt in (1, 2):
+    backoff = (2, 5, 10)
+    for attempt in range(len(backoff) + 1):
         try:
             return normalize(json.loads(get(YAHOO.format(sym=urllib.request.quote(sym)))), sym)
         except urllib.error.HTTPError as e:
             if e.code == 404:
                 return None
-            if attempt == 2:
+            if attempt == len(backoff):
                 raise
         except Exception:  # noqa: BLE001
-            if attempt == 2:
+            if attempt == len(backoff):
                 raise
-        time.sleep(2)
+        time.sleep(backoff[attempt])
 
 
 def main():
@@ -173,12 +174,29 @@ def main():
             print(f"[{i}/{len(syms)}] ok={len(ok)} missing={len(missing)} failed={len(failed)}")
         time.sleep(0.15)  # be polite to Yahoo
 
+    # A failed symbol keeps its previous file (the workflow seeds the output
+    # dir from the last publish); only symbols that left the universe go.
+    kept = []
+    if not only:
+        wanted = set(syms)
+        for name in os.listdir(out):
+            if not name.endswith(".json") or name == "_index.json":
+                continue
+            sym = name[:-5]
+            if sym in wanted:
+                if sym in failed:
+                    kept.append(sym)
+            else:
+                os.remove(os.path.join(out, name))
+    published = sorted(set(ok) | set(kept))
+
     index = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "count": len(ok),
-        "symbols": ok,
+        "count": len(published),
+        "symbols": published,
         "missing": missing,
         "failed": failed,
+        "stale": kept,  # failed this run, serving the previous publish
     }
     with open(os.path.join(out, "_index.json"), "w") as f:
         json.dump(index, f, separators=(",", ":"))

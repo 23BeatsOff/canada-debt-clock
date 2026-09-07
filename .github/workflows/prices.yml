@@ -31,6 +31,18 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Start from the last publish so a transient Yahoo error keeps
+      # yesterday's file for that symbol instead of dropping the symbol.
+      - name: Seed from the current data branch
+        run: |
+          mkdir -p out/prices
+          if git fetch -q origin data:refs/remotes/origin/data 2>/dev/null; then
+            git archive origin/data prices | tar -x -C out
+            echo "seeded $(ls out/prices | wc -l) files from the previous publish"
+          else
+            echo "no data branch yet; starting empty"
+          fi
+
       - name: Fetch prices
         run: python3 scripts/fetch_prices.py out/prices
 
