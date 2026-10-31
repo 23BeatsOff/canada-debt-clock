@@ -6,7 +6,7 @@
 //  StatCan) are cross-origin and pass straight through, never cached.
 // =============================================================================
 
-const CACHE = "cdc-v5";
+const CACHE = "cdc-v6";
 const CORE = [
   "/",
   "/index.html",
