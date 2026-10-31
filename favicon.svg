@@ -1,16 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect x="2" y="2" width="96" height="96" rx="22" fill="#0e141d"/>
-  <g fill="none" stroke="#F7931A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M30 36 C28 25, 43 25, 41 35"/>
-    <path d="M59 35 C57 25, 72 25, 70 36"/>
-    <path d="M36 80 L29 88"/>
-    <path d="M64 80 L71 88"/>
-    <path d="M50 31 L50 27"/>
-  </g>
-  <circle cx="50" cy="56" r="22" fill="#F7931A"/>
-  <g fill="none" stroke="#1a1205" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M50 56 L50 44"/>
-    <path d="M50 56 L60 60"/>
-  </g>
-  <circle cx="50" cy="56" r="2.6" fill="#1a1205"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="t" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="70" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3"/></filter><pattern id="d" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.8" fill="#8A6F33"/></pattern></defs><rect width="100" height="100" rx="18" fill="#ECE8E0"/><g transform="translate(6 2) scale(0.88)"><g filter="url(#t)"><circle cx="31" cy="30" r="12" fill="#CFC9BD"/><circle cx="69" cy="30" r="12" fill="#CFC9BD"/><circle cx="50" cy="56" r="28" fill="#C7A04C"/></g><circle cx="50" cy="56" r="28" fill="url(#d)" opacity="0.3"/><rect x="48.4" y="38" width="3.2" height="19" fill="#2E2D2A"/><rect x="49" y="54.4" width="15" height="3.2" fill="#2E2D2A" transform="rotate(18 50 56)"/><circle cx="50" cy="56" r="3" fill="#2E2D2A"/><rect x="47" y="22" width="6" height="7" fill="#2E2D2A"/><rect x="28" y="80" width="4" height="11" fill="#2E2D2A" transform="rotate(35 30 85)"/><rect x="68" y="80" width="4" height="11" fill="#2E2D2A" transform="rotate(-35 70 85)"/></g><line x1="22" y1="92" x2="78" y2="92" stroke="#A23A2A" stroke-width="2.4"/></svg>

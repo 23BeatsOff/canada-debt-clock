@@ -6,34 +6,41 @@
    reserved for the debt so it still hits hard on white.
    ============================================================================= */
 
+/* Fonts hosted on this site (SIL Open Font License, see assets/fonts) */
+@font-face { font-family: "Work Sans"; src: url("../assets/fonts/work-sans.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Newsreader"; src: url("../assets/fonts/newsreader.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "Newsreader"; src: url("../assets/fonts/newsreader-italic.woff2") format("woff2"); font-weight: 200 800; font-style: italic; font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("../assets/fonts/ibm-plex-mono.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+
 :root {
-  --bg: #ffffff;
-  --paper: #fcfcfc;          /* panels + header */
-  --paper-2: #f7f6f3;        /* warmer inset */
-  --ink: #241f1a;            /* primary text — warm near-black, the doodle ink */
-  --ink-soft: #4a423a;
-  --muted: #8c8880;
-  --faint: #b6b1a8;
-  --border: #e8e5df;         /* light hairline */
-  --line: #241f1a;           /* hand-drawn frame stroke */
+  --bg: #ECE8E0;             /* warm paper */
+  --paper: #F4F1EB;          /* panels and cards */
+  --paper-2: #E3DED4;        /* insets, tracks */
+  --ink: #2B2A27;
+  --ink-soft: #45433E;
+  --muted: #5E5B55;
+  --faint: #8E897F;          /* decorative only, not for text */
+  --border: #CBC6BB;         /* hairlines */
+  --line: #2B2A27;
 
-  --debt: #d92d20;           /* the debt — the one alarming colour */
-  --debt-soft: #fcece9;
-  --btc: #f7931a;
-  --btc-ink: #b9640a;        /* orange dark enough to read as text on white */
-  --btc-soft: #fff5e9;
-  --accent: #2f6f8f;         /* slate-blue, the doodle secondary */
-  --warn: #b26a08;           /* deep amber for the hidden-tax figures */
-  --warn-soft: #fdf3e2;
-  --good: #2f9e44;
+  --debt: #A23A2A;           /* the debt: the one alarming colour */
+  --debt-soft: #EBDCD3;
+  --btc: #C7A04C;            /* the coin (fills, rings, lines) */
+  --btc-ink: #7A5A1E;        /* gold dark enough to read as text */
+  --btc-soft: #EEE5CF;
+  --accent: #44626C;         /* slate blue */
+  --warn: #8C4F2A;           /* burnt umber for the hidden tax */
+  --warn-soft: #EADFD2;
+  --good: #4E7A55;
 
-  --font-num: "Courier New", Courier, "SF Mono", ui-monospace, monospace;
-  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-ui: "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
   --maxw: 1160px;
 
-  /* hand-drawn wobble radius + offset-fill shadow (echoes the doodles) */
-  --wobble: 14px 12px 16px 13px / 13px 16px 12px 15px;
-  --pop: 5px 6px 0 -1px rgba(36, 31, 26, 0.10);
+  /* flat cut-paper: square corners, no drop shadows */
+  --wobble: 0;
+  --pop: none;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -747,4 +754,288 @@ body {
   .footer,
   .foot-grid > div { text-align: center; }
   .sources { display: inline-block; text-align: left; }
+}
+
+/* =============================================================================
+   AMBIENT SLEEVE THEME (shared with limestonecitybitcoin.com)
+   Warm paper, flat cut-paper panels, quiet type, a red hairline, film grain.
+   These rules sit last so they restyle the components above without changing
+   any layout or behaviour.
+   ============================================================================= */
+
+body {
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+strong, b { font-weight: 500; }
+
+/* The old graph-paper layer becomes a film-grain layer */
+.bg-grid {
+  z-index: 50;
+  pointer-events: none;
+  background-image: url("../assets/grain.svg");
+  background-size: 220px 220px;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+/* Plex Mono has one weight: keep every numeral at 400 so nothing is faux-bold */
+.hero-number, .value, .interest-number, .prov-name, .prov-val, .tr-input,
+.tr-range, .tr-sym, .tr-v, .tr-tip .tt-d, .tr-tip b, .ring-pct, .ring-mined,
+.gp-val, .gp-vs, .scarcity-punch [data-metric], .tip-addr, .status-pill,
+.hero-context, .accent, .footer code {
+  font-weight: 400;
+}
+
+:focus-visible { outline: 1px solid var(--debt); outline-offset: 3px; }
+::selection { background: #BCCDD3; color: var(--ink); }
+
+/* ---------- Header ---------- */
+.topbar {
+  background: transparent;
+  border-bottom: 0;
+  padding-top: 32px;
+  padding-bottom: 8px;
+  align-items: flex-start;
+}
+.brand { gap: 14px; align-items: center; }
+.brand-doodle { width: 52px; height: 52px; }
+.brand-text { display: flex; flex-direction: column; gap: 7px; }
+.brand-name {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+.brand-rule { display: block; width: 200px; max-width: 100%; height: 1px; background: var(--debt); }
+.brand-sub { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.2; }
+
+.status-pill {
+  border-radius: 0;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-size: 12px;
+  color: var(--muted);
+}
+.status-pill.live { color: var(--good); border-color: var(--good); background: transparent; }
+
+.tagline {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(22px, 3.4vw, 34px);
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 56px auto 40px;
+  max-width: 760px;
+}
+.tagline strong { color: var(--btc-ink); font-weight: 300; font-style: italic; }
+
+/* ---------- Hero ---------- */
+.hero {
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 40px 0 36px;
+}
+.hero-label,
+.interest-label,
+.card h3,
+.tr-label,
+.tr-k,
+.ring-label {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+}
+.hero-label { font-size: 12px; color: var(--muted); }
+.hero-number { letter-spacing: -0.02em; }
+.hero-sub { font-weight: 300; }
+.hero-doodle { width: 72px; height: 72px; margin-bottom: 14px; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--paper);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.card:hover {
+  transform: none;
+  box-shadow: inset 0 -1px 0 var(--debt);
+}
+.card h3 { font-size: 11px; color: var(--muted); }
+.value { letter-spacing: -0.02em; }
+.hint { font-weight: 300; color: var(--muted); }
+
+/* ---------- Interest band ---------- */
+.interest-band {
+  border: 0;
+  border-radius: 0;
+  background: var(--debt-soft);
+  box-shadow: none;
+}
+.interest-label { font-size: 11.5px; }
+.interest-number { letter-spacing: -0.02em; }
+
+/* ---------- Panels ---------- */
+.panel,
+.panel.provinces,
+.panel.truereturn {
+  border: 0;
+  border-radius: 0;
+  background: var(--paper);
+  box-shadow: none;
+}
+.panel.austrian { background: var(--warn-soft); border: 0; }
+.panel.bitcoin { background: var(--btc-soft); border: 0; }
+
+.panel-head h2 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.panel-head p { font-weight: 300; }
+.panel-head strong { font-weight: 500; }
+.panel.austrian .panel-head h2 { color: var(--warn); }
+.panel.bitcoin .panel-head h2 { color: var(--ink); }
+.btc-mark { color: var(--btc-ink); }
+
+/* Cards inside coloured panels sit on lighter paper */
+.panel.austrian .card,
+.panel.bitcoin .card,
+.btc-card { background: var(--bg); border: 0; }
+.btc-card:hover { box-shadow: inset 0 -1px 0 var(--btc); }
+
+/* ---------- Provinces ---------- */
+.prov-track { background: var(--paper-2); border: 0; border-radius: 0; height: 12px; }
+.prov-fill { border-radius: 0; }
+
+/* ---------- True Return ---------- */
+.tr-input,
+.tr-ranges,
+.tr-pick,
+.tr-chart-wrap {
+  border: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--bg);
+}
+.tr-input:focus { border-color: var(--debt); box-shadow: none; }
+.tr-input::placeholder { color: var(--faint); }
+.tr-range { font-size: 13px; border-right: 1px solid var(--border); }
+.tr-range:hover { background: var(--paper-2); }
+.tr-range.on { background: var(--ink); color: var(--bg); }
+.tr-status { border-radius: 0; border: 0; background: var(--paper-2); }
+.tr-status.err { background: var(--debt-soft); border: 0; }
+.tr-status.ask { background: var(--btc-soft); border: 0; }
+.tr-pick:hover { border-color: var(--ink); background: var(--btc-soft); }
+.tr-alt { border-bottom: 1px solid var(--btc); font-weight: 400; }
+.tr-chart-wrap { background: var(--bg); border: 0; }
+.tr-stat,
+.tr-stat.real,
+.tr-stat.m2,
+.tr-stat.btc { border: 0; border-radius: 0; background: var(--paper-2); }
+.tr-stat.m2 { background: var(--debt-soft); }
+.tr-stat.btc { background: var(--btc-soft); }
+.tr-stat.m2 .tr-v.pos { color: var(--good); }
+.tr-name { font-weight: 400; }
+.tr-tip { border: 1px solid var(--line); border-radius: 0; box-shadow: none; background: var(--bg); }
+
+/* Shared button: the "Chart it" button (and anything else using .btn) */
+.btn,
+.tr-go,
+.share-btn {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--bg);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 44px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.btn:hover,
+.tr-go:hover,
+.share-btn:hover {
+  background: var(--debt);
+  border-color: var(--debt);
+  transform: none;
+  box-shadow: none;
+}
+.share-btn:active { transform: none; box-shadow: none; }
+
+/* ---------- Bitcoin ring ---------- */
+.ring-track { stroke: var(--paper-2); }
+.ring-progress { stroke: var(--btc); stroke-linecap: butt; }
+.ring-pct { color: var(--btc-ink); }
+
+/* ---------- Scarcity note ---------- */
+.scarcity-note {
+  border: 0;
+  border-top: 1px solid var(--btc);
+  border-radius: 0;
+  background: var(--bg);
+  box-shadow: none;
+}
+.scarcity-head {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(22px, 3vw, 30px);
+}
+.gp-label { font-weight: 300; }
+.gp-vs { color: var(--faint); }
+.scarcity-punch { font-weight: 400; }
+.maxi-cta { font-weight: 400; color: var(--btc-ink); }
+
+/* ---------- Tip ---------- */
+.tip-qr { border: 0; border-radius: 0; background: #ffffff; }
+.tip-zap { color: var(--btc); }
+.tip-addr { border-bottom: 1px solid var(--btc); }
+.tip-copy {
+  border: 1px solid var(--btc-ink);
+  border-radius: 0;
+  background: transparent;
+  font-weight: 400;
+  min-height: 32px;
+}
+.tip-copy:hover { background: var(--btc-soft); }
+
+/* ---------- Footer ---------- */
+.footer { border-top: 1px solid var(--border); }
+.footer h4 {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.footer p, .sources { font-weight: 300; }
+.footer code { color: var(--ink); background: var(--paper-2); border-radius: 0; }
+.sources li { border-bottom: 1px solid var(--border); }
+.foot-note strong { color: var(--debt); font-weight: 500; }
+.foot-credit a { color: var(--ink); font-weight: 400; border-bottom: 1px solid var(--debt); }
+.foot-credit a:hover { color: var(--debt); text-decoration: none; }
+
+@media (max-width: 540px) {
+  .topbar { padding-top: 20px; }
+  .brand { flex-direction: row; text-align: left; }
+  .brand-rule { width: 150px; }
+  .tagline { margin: 32px auto 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .btn, .tr-go, .share-btn { transition: none; }
 }

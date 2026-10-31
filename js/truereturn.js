@@ -48,7 +48,7 @@ export const RANGES = [
   { id: "5y", label: "5Y" },
 ];
 
-const COLORS = { nom: "#8c8880", real: "#2f6f8f", m2adj: "#d92d20", inbtc: "#f7931a" };
+const COLORS = { nom: "#8E897F", real: "#44626C", m2adj: "#A23A2A", inbtc: "#C7A04C" };
 const KEYS = ["nom", "real", "m2adj", "inbtc"];
 const WIDTHS = { nom: 1.8, real: 2, m2adj: 2.6, inbtc: 2.2 };
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -312,19 +312,19 @@ function drawChart(canvas, rows, hoverIdx) {
   for (let i = 0; i <= ticks; i++) {
     const v = lo + ((hi - lo) * i) / ticks;
     const y = Y(v);
-    ctx.strokeStyle = "rgba(36,31,26,0.10)";
+    ctx.strokeStyle = "rgba(43,42,39,0.10)";
     ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(W - padR, y); ctx.stroke();
-    ctx.fillStyle = "#8c8880"; ctx.textAlign = "right";
+    ctx.fillStyle = "#5E5B55"; ctx.textAlign = "right";
     ctx.fillText(v.toFixed(0), padL - 6, y + 4);
   }
   // The 100 line = where you started
   if (lo < 100 && hi > 100) {
-    ctx.strokeStyle = "rgba(36,31,26,0.4)"; ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = "rgba(43,42,39,0.4)"; ctx.setLineDash([4, 4]);
     ctx.beginPath(); ctx.moveTo(padL, Y(100)); ctx.lineTo(W - padR, Y(100)); ctx.stroke();
     ctx.setLineDash([]);
   }
   // x labels
-  ctx.fillStyle = "#8c8880"; ctx.textAlign = "center";
+  ctx.fillStyle = "#5E5B55"; ctx.textAlign = "center";
   for (const f of [0, 0.5, 1]) {
     const t = x0 + (x1 - x0) * f;
     ctx.textAlign = f === 0 ? "left" : f === 1 ? "right" : "center";
@@ -343,12 +343,12 @@ function drawChart(canvas, rows, hoverIdx) {
   // Hover crosshair
   if (hoverIdx != null && rows[hoverIdx]) {
     const r = rows[hoverIdx], x = X(r.t);
-    ctx.strokeStyle = "rgba(36,31,26,0.35)"; ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(43,42,39,0.35)"; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(x, padT); ctx.lineTo(x, H - padB); ctx.stroke();
     for (const k of keys) {
       ctx.fillStyle = COLORS[k];
       ctx.beginPath(); ctx.arc(x, Y(r[k]), 3.6, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.strokeStyle = "#ECE8E0"; ctx.lineWidth = 1.5; ctx.stroke();
     }
   }
   return { X, padL, padR, W };
