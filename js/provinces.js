@@ -20,11 +20,20 @@ export const PROVINCES = [
   { code: "AB", name: "Alberta", debtToGDP: 43.4, perPerson: 42368 },
 ];
 
-// Green (low burden) → red (high burden), by debt-to-GDP.
+// Sage (low burden) -> gold -> deep red (high burden), by debt-to-GDP.
+// Muted stops from the site palette so the bars sit calmly on paper.
+const SEVERITY_STOPS = [
+  [141, 163, 147], // sage   #8DA393
+  [199, 160, 76],  // gold   #C7A04C
+  [162, 58, 42],   // red    #A23A2A
+];
 function severityColor(value, min, max) {
   const t = Math.max(0, Math.min(1, (value - min) / (max - min)));
-  const hue = 140 - t * 140; // 140 = green, 0 = red
-  return `hsl(${hue}, 75%, 52%)`;
+  const seg = t < 0.5 ? 0 : 1;
+  const local = t < 0.5 ? t / 0.5 : (t - 0.5) / 0.5;
+  const a = SEVERITY_STOPS[seg], b = SEVERITY_STOPS[seg + 1];
+  const mix = a.map((v, i) => Math.round(v + (b[i] - v) * local));
+  return `rgb(${mix[0]}, ${mix[1]}, ${mix[2]})`;
 }
 
 export function renderProvinces(container) {

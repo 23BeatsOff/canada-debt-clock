@@ -15,57 +15,34 @@ const money = (n) =>
   }).format(n);
 const intl = (n) => new Intl.NumberFormat("en-CA").format(Math.round(n));
 
-// Palette — matches the light hand-drawn site theme.
-const INK = "#241f1a";
-const MUTED = "#8c8880";
-const DEBT = "#d92d20";
-const BTC = "#f7931a";
-const BTC_INK = "#b9640a";
-const MONO = '"Courier New", Courier, monospace';
-const SANS = "-apple-system, Segoe UI, Roboto, sans-serif";
+// Palette: matches the ambient sleeve site theme.
+const INK = "#2B2A27";
+const MUTED = "#5E5B55";
+const DEBT = "#A23A2A";
+const BTC = "#C7A04C";
+const BTC_INK = "#7A5A1E";
+const MONO = '"IBM Plex Mono", "Courier New", monospace';
+const SANS = '"Work Sans", -apple-system, Segoe UI, Roboto, sans-serif';
 
-// A small hand-drawn alarm clock, echoing the site's brand doodle.
+// The cut-paper alarm clock: flat shapes, no outlines (matches clock-mark.svg).
 function drawClock(ctx, cx, cy, r) {
   ctx.save();
   ctx.translate(cx, cy);
-  ctx.rotate((-4 * Math.PI) / 180);
-  const s = r / 21; // the doodle is authored around r=21
+  const s = r / 28; // authored around a face of r=28
   ctx.scale(s, s);
-  // offset orange fill
-  ctx.save();
-  ctx.translate(1.6, 2.2);
-  ctx.globalAlpha = 0.9;
-  ctx.fillStyle = BTC;
-  ctx.beginPath();
-  ctx.arc(0, 0, 21, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.fillStyle = "#CFC9BD"; // limestone bells
+  ctx.beginPath(); ctx.arc(-19, -26, 12, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(19, -26, 12, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = BTC; // gold face
+  ctx.beginPath(); ctx.arc(0, 0, 28, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = INK; // hands, hub, button, feet
+  ctx.fillRect(-1.6, -18, 3.2, 19);
+  ctx.save(); ctx.rotate((18 * Math.PI) / 180); ctx.fillRect(-1, -1.6, 15, 3.2); ctx.restore();
+  ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.fill();
+  ctx.fillRect(-3, -34, 6, 7);
+  ctx.save(); ctx.translate(-20, 29); ctx.rotate((35 * Math.PI) / 180); ctx.fillRect(-2, -5.5, 4, 11); ctx.restore();
+  ctx.save(); ctx.translate(20, 29); ctx.rotate((-35 * Math.PI) / 180); ctx.fillRect(-2, -5.5, 4, 11); ctx.restore();
   ctx.restore();
-  // ink outline
-  ctx.strokeStyle = INK;
-  ctx.lineWidth = 3.1;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.beginPath(); ctx.arc(0, 0, 21, 0, Math.PI * 2); ctx.stroke();       // body
-  ctx.beginPath(); ctx.moveTo(-14, 20); ctx.lineTo(-20, 27); ctx.stroke(); // left leg
-  ctx.beginPath(); ctx.moveTo(14, 20); ctx.lineTo(20, 27); ctx.stroke();   // right leg
-  ctx.beginPath(); ctx.arc(-14, -18, 8, Math.PI * 0.9, Math.PI * 1.9); ctx.stroke(); // left bell
-  ctx.beginPath(); ctx.arc(14, -18, 8, Math.PI * 1.1, Math.PI * 2.1); ctx.stroke();  // right bell
-  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -12); ctx.stroke();     // minute hand
-  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(11, 3); ctx.stroke();      // hour hand
-  ctx.fillStyle = INK;
-  ctx.beginPath(); ctx.arc(0, 0, 1.9, 0, Math.PI * 2); ctx.fill();         // hub
-  ctx.restore();
-}
-
-// A wobbly hand-drawn rounded rect (used for the sketch frame).
-function sketchRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
 }
 
 export function drawCard(ctx, snap) {
@@ -75,75 +52,65 @@ export function drawCard(ctx, snap) {
   const price = snap.btcPriceCAD;
 
   // Paper background
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = "#ECE8E0";
   ctx.fillRect(0, 0, SIZE, SIZE);
 
-  // Faint graph-paper grid
-  ctx.strokeStyle = "rgba(36,31,26,0.05)";
-  ctx.lineWidth = 1;
-  for (let x = 0; x <= SIZE; x += 54) {
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, SIZE); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, x); ctx.lineTo(SIZE, x); ctx.stroke();
-  }
-
-  // Hand-drawn sketch frame (offset shadow + ink border)
-  ctx.fillStyle = "rgba(36,31,26,0.08)";
-  sketchRect(ctx, 52, 58, SIZE - 88, SIZE - 88, 34); ctx.fill();
-  ctx.fillStyle = "#ffffff";
-  sketchRect(ctx, 44, 46, SIZE - 88, SIZE - 88, 34); ctx.fill();
-  ctx.strokeStyle = INK;
-  ctx.lineWidth = 5;
-  sketchRect(ctx, 44, 46, SIZE - 88, SIZE - 88, 34); ctx.stroke();
+  // A lighter paper card with a thin ink rule along its top
+  ctx.fillStyle = "#F4F1EB";
+  ctx.fillRect(44, 46, SIZE - 88, SIZE - 88);
+  ctx.fillStyle = INK;
+  ctx.fillRect(44, 46, SIZE - 88, 2);
 
   ctx.textAlign = "center";
 
   // Brand: clock doodle + wordmark
-  drawClock(ctx, SIZE / 2 - 232, 150, 26);
+  drawClock(ctx, SIZE / 2 - 268, 146, 30);
   ctx.fillStyle = INK;
-  ctx.font = `700 40px ${SANS}`;
+  ctx.font = `400 40px ${SANS}`;
   ctx.fillText("The Canadian Debt Clock", SIZE / 2 + 26, 163);
 
   // Label
   ctx.fillStyle = MUTED;
-  ctx.font = `700 40px ${SANS}`;
+  ctx.font = `400 30px ${SANS}`;
+  if ("letterSpacing" in ctx) ctx.letterSpacing = "6px";
   ctx.fillText("MY SHARE OF THE NATIONAL DEBT", SIZE / 2, 275);
+  if ("letterSpacing" in ctx) ctx.letterSpacing = "0px";
 
-  // Debt per citizen (red, Courier)
+  // Debt per citizen (red, mono)
   ctx.fillStyle = DEBT;
-  ctx.font = `700 116px ${MONO}`;
+  ctx.font = `400 116px ${MONO}`;
   ctx.fillText(money(debtPerCitizen), SIZE / 2, 400);
 
   // Divider
-  ctx.strokeStyle = "rgba(36,31,26,0.14)";
-  ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(260, 480); ctx.lineTo(820, 480); ctx.stroke();
+  ctx.fillStyle = DEBT; // the red hairline
+  ctx.fillRect(400, 479, 280, 2);
 
   // "priced in hard money"
   ctx.fillStyle = MUTED;
-  ctx.font = `600 34px ${SANS}`;
+  ctx.font = `300 34px ${SANS}`;
   ctx.fillText("priced in money that can't be printed", SIZE / 2, 552);
 
-  // Sats (orange, huge, Courier)
+  // Sats (gold, huge, mono)
   ctx.fillStyle = BTC_INK;
-  ctx.font = `700 154px ${MONO}`;
+  ctx.font = `400 154px ${MONO}`;
   ctx.fillText(intl(sats), SIZE / 2, 705);
-  ctx.fillStyle = BTC;
-  ctx.font = `700 58px ${SANS}`;
+  ctx.fillStyle = BTC_INK;
+  ctx.font = `300 58px ${SANS}`;
   ctx.fillText("sats", SIZE / 2, 772);
 
   // BTC equivalent
   ctx.fillStyle = MUTED;
-  ctx.font = `500 32px ${MONO}`;
+  ctx.font = `400 32px ${MONO}`;
   ctx.fillText(`= ${btc.toFixed(8)} ₿   at ${money(price)} / BTC`, SIZE / 2, 842);
 
   // Footer band
-  ctx.fillStyle = "rgba(247,147,26,0.10)";
+  ctx.fillStyle = "rgba(199,160,76,0.16)";
   ctx.fillRect(44, 928, SIZE - 88, 108);
   ctx.fillStyle = BTC_INK;
-  ctx.font = `700 42px ${SANS}`;
+  ctx.font = `400 42px ${SANS}`;
   ctx.fillText("canadiandebtclock.com", SIZE / 2, 982);
   ctx.fillStyle = MUTED;
-  ctx.font = `600 28px ${SANS}`;
+  ctx.font = `300 28px ${SANS}`;
   ctx.fillText("Fix the money, fix the country.", SIZE / 2, 1022);
 }
 
