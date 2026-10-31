@@ -1197,3 +1197,17 @@ body { counter-reset: track; }
   .brand-text { align-items: flex-start; }
   .status-pill { text-align: right; max-width: 45%; }
 }
+
+/* Plates sit beside a section's text, never above its title */
+.ph-title { display: flex; flex-direction: column; gap: 10px; }
+.ph-title::after { order: -1; }
+.ph-body { display: flex; align-items: flex-start; gap: clamp(24px, 4vw, 48px); }
+.ph-body p { flex: 1 1 auto; min-width: 0; margin: 0; }
+.ph-body .head-doodle { width: 140px; height: 140px; grid-row: auto; }
+@media (max-width: 540px) {
+  .ph-body { gap: 16px; }
+  .ph-body .head-doodle { width: 88px; height: 88px; }
+}
+.ph-title { align-items: flex-start; text-align: left; }
+.ph-title h2 { text-align: left; }
+.ph-title::after { align-self: flex-start; }
