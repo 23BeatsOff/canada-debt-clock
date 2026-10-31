@@ -24,27 +24,6 @@ const BTC_INK = "#7A5A1E";
 const MONO = '"IBM Plex Mono", "Courier New", monospace';
 const SANS = '"Work Sans", -apple-system, Segoe UI, Roboto, sans-serif';
 
-// The cut-paper alarm clock: flat shapes, no outlines (matches clock-mark.svg).
-function drawClock(ctx, cx, cy, r) {
-  ctx.save();
-  ctx.translate(cx, cy);
-  const s = r / 28; // authored around a face of r=28
-  ctx.scale(s, s);
-  ctx.fillStyle = "#CFC9BD"; // limestone bells
-  ctx.beginPath(); ctx.arc(-19, -26, 12, 0, Math.PI * 2); ctx.fill();
-  ctx.beginPath(); ctx.arc(19, -26, 12, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = BTC; // gold face
-  ctx.beginPath(); ctx.arc(0, 0, 28, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = INK; // hands, hub, button, feet
-  ctx.fillRect(-1.6, -18, 3.2, 19);
-  ctx.save(); ctx.rotate((18 * Math.PI) / 180); ctx.fillRect(-1, -1.6, 15, 3.2); ctx.restore();
-  ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.fill();
-  ctx.fillRect(-3, -34, 6, 7);
-  ctx.save(); ctx.translate(-20, 29); ctx.rotate((35 * Math.PI) / 180); ctx.fillRect(-2, -5.5, 4, 11); ctx.restore();
-  ctx.save(); ctx.translate(20, 29); ctx.rotate((-35 * Math.PI) / 180); ctx.fillRect(-2, -5.5, 4, 11); ctx.restore();
-  ctx.restore();
-}
-
 export function drawCard(ctx, snap) {
   const debtPerCitizen = snap.debtPerCitizen;
   const sats = snap.yourShareInSats;
@@ -64,10 +43,11 @@ export function drawCard(ctx, snap) {
   ctx.textAlign = "center";
 
   // Brand: clock doodle + wordmark
-  drawClock(ctx, SIZE / 2 - 268, 146, 30);
   ctx.fillStyle = INK;
-  ctx.font = `400 40px ${SANS}`;
-  ctx.fillText("The Canadian Debt Clock", SIZE / 2 + 26, 163);
+  ctx.font = `400 38px ${SANS}`;
+  ctx.fillText("The Canadian Debt Clock", SIZE / 2, 150);
+  ctx.fillStyle = DEBT;
+  ctx.fillRect(SIZE / 2 - 150, 172, 300, 2);
 
   // Label
   ctx.fillStyle = MUTED;
@@ -78,7 +58,7 @@ export function drawCard(ctx, snap) {
 
   // Debt per citizen (red, mono)
   ctx.fillStyle = DEBT;
-  ctx.font = `400 116px ${MONO}`;
+  ctx.font = `300 116px ${MONO}`;
   ctx.fillText(money(debtPerCitizen), SIZE / 2, 400);
 
   // Divider
@@ -92,7 +72,7 @@ export function drawCard(ctx, snap) {
 
   // Sats (gold, huge, mono)
   ctx.fillStyle = BTC_INK;
-  ctx.font = `400 154px ${MONO}`;
+  ctx.font = `300 154px ${MONO}`;
   ctx.fillText(intl(sats), SIZE / 2, 705);
   ctx.fillStyle = BTC_INK;
   ctx.font = `300 58px ${SANS}`;
