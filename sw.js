@@ -6,7 +6,7 @@
 //  StatCan) are cross-origin and pass straight through, never cached.
 // =============================================================================
 
-const CACHE = "cdc-v4";
+const CACHE = "cdc-v5";
 const CORE = [
   "/",
   "/index.html",
@@ -23,7 +23,7 @@ const CORE = [
   "/js/tip.js",
   "/js/truereturn.js",
   "/assets/doodles/line-chart-down.svg",
-  "/assets/clock-mark.svg",
+  "/assets/fonts/ibm-plex-mono-light.woff2",
   "/assets/grain.svg",
   "/assets/fonts/work-sans.woff2",
   "/assets/fonts/newsreader.woff2",

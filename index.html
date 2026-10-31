@@ -53,7 +53,6 @@
     <!-- ===================== HEADER ===================== -->
     <header class="topbar">
       <div class="brand">
-        <img class="brand-doodle" src="assets/clock-mark.svg" alt="" aria-hidden="true" width="52" height="52" />
         <span class="brand-text"><span class="brand-name">The Canadian Debt Clock</span><span class="brand-rule" aria-hidden="true"></span><span class="brand-sub">Priced in hard money</span></span>
       </div>
       <div id="live-status" class="status-pill seed">● connecting…</div>
@@ -66,18 +65,21 @@
 
     <!-- ===================== HERO ===================== -->
     <section class="hero">
-      <img class="hero-doodle" src="assets/doodles/city-hall.svg" alt="" aria-hidden="true" />
-      <div class="hero-label">CANADA · FEDERAL DEBT</div>
-      <div class="hero-number debt" data-metric="federalDebt" data-odometer>$0</div>
-      <div class="hero-sub">
-        Federal + provincial net debt:
-        <span class="accent" data-metric="totalGovDebt" data-format="money">$0</span>
+      <div class="hero-text">
+        <div class="hero-label">CANADA · FEDERAL DEBT</div>
+        <div class="hero-number debt" data-metric="federalDebt" data-odometer>$0</div>
+        <span class="hero-rule" aria-hidden="true"></span>
+        <div class="hero-sub">
+          Federal + provincial net debt:
+          <span class="accent" data-metric="totalGovDebt" data-format="money">$0</span>
+        </div>
+        <div class="hero-context">
+          <span><span data-metric="federalDebtToGDP" data-format="pct">0%</span> of GDP (federal)</span>
+          <span class="dot">·</span>
+          <span><span data-metric="totalDebtToGDP" data-format="pct">0%</span> of GDP (all govts)</span>
+        </div>
       </div>
-      <div class="hero-context">
-        <span><span data-metric="federalDebtToGDP" data-format="pct">0%</span> of GDP (federal)</span>
-        <span class="dot">·</span>
-        <span><span data-metric="totalDebtToGDP" data-format="pct">0%</span> of GDP (all govts)</span>
-      </div>
+      <img class="hero-plate" src="assets/doodles/city-hall.svg" alt="" aria-hidden="true" width="300" height="300" />
     </section>
 
     <!-- ===================== CORE GRID ===================== -->
@@ -115,7 +117,8 @@
 
     <!-- ===================== INTEREST BAND ===================== -->
     <section class="interest-band">
-      <img class="hero-doodle" src="assets/doodles/burning-banknote.svg" alt="" aria-hidden="true" />
+      <img class="hero-plate" src="assets/doodles/burning-banknote.svg" alt="" aria-hidden="true" width="220" height="220" />
+      <div class="hero-text">
       <div class="interest-label">GOVERNMENT DEBT INTEREST · PAID THIS FISCAL YEAR</div>
       <div class="interest-number" data-metric="combinedInterestYTD" data-odometer>$0</div>
       <div class="interest-sub">
@@ -126,6 +129,7 @@
         but the right to keep borrowing. For context, Ottawa spends
         <span id="ottawa-compare"><span class="accent">$80&nbsp;billion</span> on Old Age Security</span>
         per year.
+      </div>
       </div>
     </section>
 
