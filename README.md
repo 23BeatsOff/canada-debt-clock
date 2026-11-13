@@ -1,3 +1,5 @@
+> **Moved.** The Canadian Debt Clock now lives in the Limestone City Bitcoin site: https://limestonecitybitcoin.com/debt-clock/ (code in [limestone-city-bitcoin](https://github.com/23BeatsOff/limestone-city-bitcoin), under `docs/debt-clock` and `debt-clock-backend`). This repo only forwards canadiandebtclock.com to the new address.
+
 # The Canadian Debt Clock 🍁₿
 
 A real-time visualization of Canada's debt — federal and total government — with two things the U.S. Debt Clock leaves out:
